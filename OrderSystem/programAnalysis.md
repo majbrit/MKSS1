@@ -12,4 +12,3 @@ OrderService.class:
 
 Product.class & Service.class
 - Product.class and Service.class have a similar structure => a common superclass would be useful
-

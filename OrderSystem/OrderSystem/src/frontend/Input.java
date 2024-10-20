@@ -1,3 +1,4 @@
+package frontend;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,6 +54,19 @@ public class Input {
 		return result;
 	}
 
+	public static char readChar() {
+		char result;
+		String v = null;
+		try {
+			v = readString();
+			result = v.charAt(0);
+		} catch(NumberFormatException | StringIndexOutOfBoundsException e) {
+			return 'n';
+		}
+
+		return result;
+	}
+
 	public static String readString() {
 		String result;
 
@@ -70,16 +84,16 @@ public class Input {
 		int eingabe = 0;
 		while(eingabe != -1) {
 			System.out.print("Enter text: ");
-			System.out.println("Input was:" + Input.readString());
+			System.out.println("frontend.Input was:" + Input.readString());
 			System.out.print("Enter float: ");
-			System.out.println("Input was:" + Input.readFloat());
+			System.out.println("frontend.Input was:" + Input.readFloat());
 			System.out.print("Enter double: ");
-			System.out.println("Input was:" + Input.readDouble());
+			System.out.println("frontend.Input was:" + Input.readDouble());
 			System.out.print("Enter boolean: ");
-			System.out.println("Input was:" + Input.readBoolean());
+			System.out.println("frontend.Input was:" + Input.readBoolean());
 			System.out.print("Enter integer number (Cancel with -1): ");
 			eingabe = Input.readInt();
-			System.out.println("Input was: " + eingabe);
+			System.out.println("frontend.Input was: " + eingabe);
 		}
 	}
 }

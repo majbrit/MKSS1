@@ -1,26 +1,21 @@
+package model;
 
-public class Product {
+public class Product extends Item {
 
-	private String name;
-	private int unitPrice;
-	private int quantity;
+
+	private int unitPrice, quantity;
 
 	public Product(String name, int unitPrice, int quantity) {
-		this.name = name;
+		super(name, unitPrice * quantity);
 		this.unitPrice = unitPrice;
 		this.quantity = quantity;
 	}
 
-	public String getName() {
-		return name;
-	}
-
+	@Override
 	public int getPrice() {
 		return unitPrice * quantity;
 	}
-
-	@Override
-	public String toString() {
+	public String getDescription() {
 		return quantity + " * " + getName();
 	}
 }
