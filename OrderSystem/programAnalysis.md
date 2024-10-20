@@ -12,7 +12,7 @@ OrderService.class:
 - Converting this.products[i] into a string (var10001 = String.valueOf(this.products[i]);) in order to use it in println in a concatenation is unnecessary, as in Java a string conversion is automatically carried out anyway when concatenating strings with other values.
 - The output in the for loops in finishOrder() for each product and service can be summarised in a separate function.
 - var10001 is first used for the formatted individual prices and then for the formatted sum => individual variables would be useful for clarity
-- return priceInCent / 100 + ‘.’ + (priceInCent % 100 < 10 ? ‘0’ : ‘’) + priceInCent % 100 + ‘ EUR’; could be made more readable and shorter by return String.format(‘%.2f EUR’, priceInCent / 100.0);.
+- return priceInCent / 100 + ‘.’ + (priceInCent % 100 < 10 ? ‘0’ : ‘’) + priceInCent % 100 + ‘ EUR’; could be made more readable and shorter by return String.format("%.2f EUR", priceInCent / 100.0);.
 
 Product.class & Service.class
 - Product.class and Service.class have a similar structure => a common superclass would be useful
