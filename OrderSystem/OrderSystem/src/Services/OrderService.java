@@ -1,3 +1,9 @@
+package Services;
+
+import Common.Input;
+import Entities.Product;
+import Entities.Service;
+
 public class OrderService {
 
 	private Product[] products = new Product[5];
@@ -64,7 +70,7 @@ public class OrderService {
 	}
 	
 	private void orderService(int index) {
-		System.out.println("Service type: ");
+		System.out.println("Entities.Service type: ");
 		String l = Input.readString();
 		System.out.println("Number of persons: ");
 		int p = Input.readInt();

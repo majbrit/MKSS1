@@ -1,3 +1,4 @@
+package Entities;
 
 public class Service {
 
@@ -9,6 +10,7 @@ public class Service {
 		hours = s;
 		persons = p;
 	}
+
 
 	public String getName() {
 		return name;

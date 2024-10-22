@@ -1,3 +1,4 @@
+package Common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,16 +71,16 @@ public class Input {
 		int eingabe = 0;
 		while(eingabe != -1) {
 			System.out.print("Enter text: ");
-			System.out.println("Input was:" + Input.readString());
+			System.out.println("Common.Input was:" + Input.readString());
 			System.out.print("Enter float: ");
-			System.out.println("Input was:" + Input.readFloat());
+			System.out.println("Common.Input was:" + Input.readFloat());
 			System.out.print("Enter double: ");
-			System.out.println("Input was:" + Input.readDouble());
+			System.out.println("Common.Input was:" + Input.readDouble());
 			System.out.print("Enter boolean: ");
-			System.out.println("Input was:" + Input.readBoolean());
+			System.out.println("Common.Input was:" + Input.readBoolean());
 			System.out.print("Enter integer number (Cancel with -1): ");
 			eingabe = Input.readInt();
-			System.out.println("Input was: " + eingabe);
+			System.out.println("Common.Input was: " + eingabe);
 		}
 	}
 }
