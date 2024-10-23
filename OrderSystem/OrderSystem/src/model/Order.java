@@ -22,9 +22,9 @@ public class Order {
         return items;
     }
 
-    // Sorting: Collection.sort() or List.sort()
+    // Sorting: Collection.sort()
     public void sortItemsByPrice() {
-        Collections.sort(this.items);
+        Collections.sort(getItems());
     }
 
     public void setCheckoutDateTime() {
@@ -36,7 +36,7 @@ public class Order {
     }
 
     public void printCheckoutDateTime() {
-        System.out.println("Checkout at " + simpleDateFormat.format(checkoutDateTime));
+        System.out.println("Checkout at " + simpleDateFormat.format(getCheckoutDateTime()));
     }
 
     public void printSum() {
@@ -48,7 +48,7 @@ public class Order {
         int sum = 0;
         for (Item item : items) {
             if (item != null) {
-                sum += item.getPrice();
+                sum += item.getTotalPrice();
             }
         }
         return sum;
@@ -56,10 +56,11 @@ public class Order {
 
     public void printItems() {
         for (Item item : items) {
-            System.out.println(item.getDescription() + " = " + formatPrice(item.getPrice()));
+            System.out.println(item.getDescription() + " = " + formatPrice(item.getTotalPrice()));
         }
     }
 
+    // Shorter and simpler conversion from cent to euro
     private String formatPrice(int priceInCent) {
         return String.format("%.2f EUR", priceInCent / 100.0);
     }

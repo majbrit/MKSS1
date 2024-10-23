@@ -5,18 +5,23 @@ package model;
 public abstract class Item implements Comparable<Item>{
     protected String name;
     protected int totalPrice;
+    protected int pricePerUnit;
 
-    public Item(String name, int totalPrice) {
+    public Item(String name, int pricePerUnit) {
         this.name = name;
-        this.totalPrice = totalPrice;
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getPrice() {
-        return totalPrice;
+    public int getPricePerUnit() {
+        return pricePerUnit;
     }
 
     public String getDescription() {
@@ -25,6 +30,6 @@ public abstract class Item implements Comparable<Item>{
 
     @Override
     public int compareTo(Item i) {
-        return Double.compare(getPrice(), i.getPrice());
+        return Double.compare(getTotalPrice(), i.getTotalPrice());
     }
 }
