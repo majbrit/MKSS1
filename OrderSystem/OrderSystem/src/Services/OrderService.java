@@ -4,6 +4,8 @@ import Entities.Item;
 import Entities.Order;
 import Entities.Product;
 import Entities.Service;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,10 +30,14 @@ public class OrderService {
 		return order.getItems();
 	}
 
-	public void printOrder() {
+	public String CheckoutDateTime (){
 		order.setCheckoutDateTime();
-		order.printItems();
-		order.printSum();
-		order.printCheckoutDateTime();
+		return order.CheckoutDateTime();
 	}
+
+	public int getsum (){
+		return order.getSum();
+	}
+
+
 }

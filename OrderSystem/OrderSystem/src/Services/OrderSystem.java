@@ -31,8 +31,13 @@ public class OrderSystem {
     public List<Item> getitems() {
         return OrderService.getitems();
     }
-
-    public void finishOrder() {
-        OrderService.printOrder();
+    public String CheckoutDateTime (){
+        return OrderService.CheckoutDateTime();
     }
+    public int getsum (){
+        return OrderService.getsum();
+    }
+
+
+
 }
