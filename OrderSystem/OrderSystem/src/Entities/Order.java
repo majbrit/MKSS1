@@ -39,12 +39,10 @@ public class Order {
         return checkoutDateTime;
     }
 
-    public void printItems() {
-        sortItems();
-        for (Item item : items) {
-            System.out.println(item.getDescription() + " = " + formatPrice(item.getTotalPrice()));
-        }
+    public String CheckoutDateTime() {
+        return simpleDateFormat.format(getCheckoutDateTime());
     }
+
 
     public int getSum() {
         int sum = 0;
@@ -56,13 +54,6 @@ public class Order {
         return sum;
     }
 
-    public void printSum() {
-        System.out.println("Sum: " + formatPrice(getSum()));
-    }
-
-    public void printCheckoutDateTime() {
-        System.out.println("Checkout at " + simpleDateFormat.format(getCheckoutDateTime()));
-    }
 
     // Shorter and simpler conversion from cent to euro
     private String formatPrice(int priceInCent) {

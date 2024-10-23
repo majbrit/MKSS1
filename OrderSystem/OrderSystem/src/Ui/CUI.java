@@ -85,6 +85,31 @@ public class CUI {
     }
 
     private void finishOrder() {
-        OrderSystem.finishOrder();
+       printitems();
+       printsum();
+       printCheckoutDateTime();
     }
+
+    private void printsum() {
+        int sum = OrderSystem.getsum();
+        System.out.println("Sum: " + formatPrice(sum));
+
+    }
+
+    private void printCheckoutDateTime() {
+        String date = OrderSystem.CheckoutDateTime();
+        System.out.println("Checkout at " + date);
+    }
+
+    private void printitems() {
+        items = OrderSystem.getitems();
+        for (Item item : items) {
+            System.out.println(item.getDescription() + " = " + formatPrice(item.getTotalPrice()));
+        }
+    }
+
+    private String formatPrice(int priceInCent) {
+        return String.format("%.2f EUR", priceInCent / 100.0);
+    }
+
 }
