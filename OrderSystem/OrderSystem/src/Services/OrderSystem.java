@@ -31,4 +31,8 @@ public class OrderSystem {
     public List<Item> getitems() {
         return OrderService.getitems();
     }
+
+    public void finishOrder() {
+        OrderService.printOrder();
+    }
 }

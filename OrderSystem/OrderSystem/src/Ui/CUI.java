@@ -17,7 +17,6 @@ public class CUI {
 
     public CUI() {
         this.OrderSystem = new OrderSystem();
-
     }
 
     public void menuloop() {
@@ -65,13 +64,13 @@ public class CUI {
 
     private void orderProduct() {
         System.out.println("Name: ");
-        String Name = Input.readString();
+        String name = Input.readString();
         System.out.println("Unit price (in cents): ");
         int price = Input.readInt();
         System.out.println("Quantity: ");
         int quantity = Input.readInt();
 
-        OrderSystem.addProduct(Name, price, quantity);
+        OrderSystem.addProduct(name, price, quantity);
     }
 
     private void orderService() {
@@ -86,17 +85,6 @@ public class CUI {
     }
 
     private void finishOrder() {
-        items = OrderSystem.getitems();
-        int sum = 0;
-        for (Item item : items) {
-            item.print();
-            sum += item.getPrice();
-        }
-        System.out.println("Total Sum: " + formatPrice(sum));
+        OrderSystem.finishOrder();
     }
-    private String formatPrice(int priceInCent) {
-        return (priceInCent / 100) + "." + (priceInCent % 100 < 10 ? "0" : "")
-                + priceInCent % 100 + " EUR";
-    }
-
 }

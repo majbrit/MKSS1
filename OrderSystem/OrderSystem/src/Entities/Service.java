@@ -1,32 +1,27 @@
 package Entities;
 
-public class Service implements Item {
+public class Service extends Item {
 
-	private String name;
 	private int hours, persons;
 
 	public Service(String name, int persons, int hours) {
-		this.name = name;
+		super(name, 1242);
 		this.hours = hours;
 		this.persons = persons;
 	}
+	public int getHours() {
+		return hours;
+	}
 
-
-	public String getName() {
-		return name;
+	public int getPersons() {
+		return persons;
 	}
 
 	@Override
-	public int getPrice() {
-		return 1242 * hours * persons; // Example price calculation
+	public int getTotalPrice() {
+		return getUnitPrice() * getHours() * getPersons();
 	}
-
-	@Override
-	public void print() {
-		System.out.println(persons + " persons for " + hours + "h of " + getName()+ " = " + formatPrice(getPrice()));
-	}
-	private String formatPrice(int priceInCent) {
-		return (priceInCent / 100) + "." + (priceInCent % 100 < 10 ? "0" : "")
-				+ priceInCent % 100 + " EUR";
+	public String getDescription() {
+		return getPersons() + " persons for " + getHours() + "h of " + getName();
 	}
 }

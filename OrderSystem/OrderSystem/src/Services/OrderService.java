@@ -27,4 +27,11 @@ public class OrderService {
 		order.sortItems();
 		return order.getItems();
 	}
+
+	public void printOrder() {
+		order.setCheckoutDateTime();
+		order.printItems();
+		order.printSum();
+		order.printCheckoutDateTime();
+	}
 }
