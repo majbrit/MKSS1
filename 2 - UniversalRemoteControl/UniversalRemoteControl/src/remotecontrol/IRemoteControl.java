@@ -1,5 +1,7 @@
 package remotecontrol;
 
+import button.IActionButton;
+
 /**
  * Interface for a generic remote control.
  */
@@ -12,9 +14,9 @@ public interface IRemoteControl {
      * The action button was pressed.
      * Depending on its status, it will execute an activate or deactivate action.
      *
-     * @param no The number of the button.
+     * @param buttonNumber The number of the button.
      */
-    public void actionButtonPressed(int no);
+    public void actionButtonPressed(int buttonNumber);
 
     /**
      * The undo button was pressed.

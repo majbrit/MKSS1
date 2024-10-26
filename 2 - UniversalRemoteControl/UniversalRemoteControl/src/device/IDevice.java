@@ -1,4 +1,4 @@
-package remotecontrol;
+package device;
 
 public interface IDevice {
     public void on();

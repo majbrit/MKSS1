@@ -1,6 +1,8 @@
-package remotecontrol;
+package command;
 
-public class PauseCommand implements ICommand{
+import device.IDevice;
+
+public class PauseCommand implements ICommand {
 
     private IDevice device;
 

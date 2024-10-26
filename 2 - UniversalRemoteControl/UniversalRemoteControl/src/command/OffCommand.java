@@ -1,6 +1,8 @@
-package remotecontrol;
+package command;
 
-public class OffCommand implements ICommand{
+import device.IDevice;
+
+public class OffCommand implements ICommand {
 
     private IDevice device;
 

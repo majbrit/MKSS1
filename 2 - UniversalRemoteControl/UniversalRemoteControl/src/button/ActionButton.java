@@ -1,4 +1,6 @@
-package remotecontrol;
+package button;
+
+import command.ICommand;
 
 public class ActionButton implements IActionButton {
     private ICommand activateCommand;

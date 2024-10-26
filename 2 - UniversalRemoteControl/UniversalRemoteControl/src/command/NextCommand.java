@@ -1,4 +1,6 @@
-package remotecontrol;
+package command;
+
+import device.IDevice;
 
 public class NextCommand implements ICommand {
 

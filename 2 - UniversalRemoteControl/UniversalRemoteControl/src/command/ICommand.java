@@ -1,4 +1,4 @@
-package remotecontrol;
+package command;
 
 public interface ICommand {
     /**

@@ -1,4 +1,6 @@
-package remotecontrol;
+package button;
+
+import command.ICommand;
 
 public interface IActionButton {
     /**

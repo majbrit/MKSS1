@@ -1,4 +1,4 @@
-package remotecontrol;
+package device;
 
 public class Device1 implements IDevice{
 
