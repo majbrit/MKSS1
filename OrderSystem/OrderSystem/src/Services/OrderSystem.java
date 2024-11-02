@@ -12,6 +12,7 @@ public class OrderSystem {
 
     public OrderSystem() {
         this.OrderService =  new  OrderService ();
+        this.OrderService.setItemFactory(new SimpleItemFactory());
     }
 
     public void neworder() {
