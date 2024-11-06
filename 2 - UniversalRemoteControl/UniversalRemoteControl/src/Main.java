@@ -1,5 +1,4 @@
-import button.ActionButton;
-import button.IActionButton;
+
 import command.*;
 import device.Device1;
 import device.IDevice;
@@ -16,9 +15,9 @@ public class Main {
 
 		// TODO: configure the buttons for the media player remote
 		IDevice device1 = new Device1();
-		IActionButton onOffButton = new ActionButton(new OnCommand(device1), new OffCommand(device1));
-		IActionButton playPauseButton = new ActionButton(new PlayCommand(device1), new PauseCommand(device1));
-		IActionButton nextPreviousButton = new ActionButton(new NextCommand(device1), new PreviousCommand(device1));
+		ICommand onOffButton = new OnOffCommand(device1);
+		ICommand playPauseButton = new PlayPauseCommand(device1);
+		ICommand nextPreviousButton = new NextPreviousCommand(device1);
 		mediaPlayerRemote.configureButton(0, onOffButton);
 		mediaPlayerRemote.configureButton(1, playPauseButton);
 		mediaPlayerRemote.configureButton(2, nextPreviousButton);
@@ -28,6 +27,7 @@ public class Main {
 		mediaPlayerRemote.actionButtonPressed(0);
 		mediaPlayerRemote.actionButtonPressed(1);
 		mediaPlayerRemote.actionButtonPressed(2);
+		mediaPlayerRemote.actionButtonPressed(3);
 		mediaPlayerRemote.undoButtonPressed();
 		mediaPlayerRemote.actionButtonPressed(0);
 		mediaPlayerRemote.actionButtonPressed(1);

@@ -1,6 +1,6 @@
 package remotecontrol;
 
-import button.IActionButton;
+import command.ICommand;
 
 /**
  * Interface for a generic remote control.
@@ -8,7 +8,7 @@ import button.IActionButton;
 public interface IRemoteControl {
 
     // TODO: Method for configuration of action buttons
-    public void configureButton(int buttonNumber, IActionButton button);
+    public void configureButton(int buttonNumber, ICommand button);
 
     /**
      * The action button was pressed.
