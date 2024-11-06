@@ -2,11 +2,21 @@ package device;
 
 public class Device1 implements IDevice{
 
+    private boolean on;
+    private boolean play;
+    private boolean next;
+
+    public Device1() {
+        on = false;
+        play = false;
+        next = false;
+    }
     /**
      * Turn device on
      */
 
     public void on() {
+        on = true;
         System.out.println("Device on");
     }
 
@@ -14,6 +24,7 @@ public class Device1 implements IDevice{
      * Turn device off
      */
     public void off() {
+        on = false;
         System.out.println("Device off");
     }
 
@@ -21,6 +32,7 @@ public class Device1 implements IDevice{
      * play device
      */
     public void play() {
+        play = true;
         System.out.println("Device play");
     }
 
@@ -28,6 +40,7 @@ public class Device1 implements IDevice{
      * pause device
      */
     public void pause() {
+        play = false;
         System.out.println("Device pause");
     }
 
@@ -35,6 +48,7 @@ public class Device1 implements IDevice{
      * select next on device
      */
     public void next() {
+        next = true;
         System.out.println("Device next");
     }
 
@@ -42,6 +56,19 @@ public class Device1 implements IDevice{
      * select previous on device
      */
     public void previous() {
+        next = false;
         System.out.println("Device previous");
+    }
+
+    public boolean isOn() {
+        return on;
+    }
+
+    public boolean isPlay() {
+        return play;
+    }
+
+    public boolean isNext() {
+        return next;
     }
 }
