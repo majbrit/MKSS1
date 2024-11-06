@@ -12,19 +12,28 @@ import java.util.List;
 public class OrderService {
 
 	private Order order;
+	private ItemFactory itemFactory;
+
+	public void setItemFactory(ItemFactory factory) {
+		this.itemFactory = factory;
+	}
 
 
 	public void neworder() {
 		this.order = new Order();
 	}
 
-	public void addProduct(String name, int price, int quantity) {
-		order.addProduct(new Product(name, price, quantity));
-	}
-	public void addService(String name, int persons, int hours) {
-		order.addService(new Service(name, persons, hours));
+	public void addProduct(String name, int unitPrice, int quantity) {
+		if (itemFactory != null) {
+			order.addProduct(itemFactory.createProduct(name, unitPrice, quantity));
+		}
 	}
 
+	public void addService(String name, int persons, int hours) {
+		if (itemFactory != null) {
+			order.addService(itemFactory.createService(name, persons, hours));
+		}
+	}
 	public List<Item> getitems() {
 		order.sortItems();
 		return order.getItems();
