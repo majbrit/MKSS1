@@ -1,6 +1,5 @@
-package Media;
+package Media.Leaf;
 
-import Component.Media;
 
 public class Video extends LeafMediaComponent {
     private String VideoName;

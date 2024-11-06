@@ -1,4 +1,4 @@
-package Composite;
+package Media.Composite;
 
 
 public class Parallel extends CompositeMediaComponent {

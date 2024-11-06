@@ -1,6 +1,7 @@
 package Main;
 
-import Composite.*;
+import Media.Composite.*;
+import Media.Leaf.*;
 import Media.*;
 
 public class Main {

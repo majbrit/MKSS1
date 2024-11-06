@@ -1,4 +1,4 @@
-package Composite;
+package Media.Composite;
 
 public class Sequence extends CompositeMediaComponent {
     @Override

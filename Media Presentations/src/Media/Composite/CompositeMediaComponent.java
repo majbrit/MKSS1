@@ -1,6 +1,6 @@
-package Composite;
+package Media.Composite;
 
-import Component.Media;
+import Media.Media;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package Media;
+package Media.Leaf;
 
-import Component.Media;
+import Media.Media;
 
 public class Music extends LeafMediaComponent {
     private String MusicName;

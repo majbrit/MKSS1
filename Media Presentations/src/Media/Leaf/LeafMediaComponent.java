@@ -1,6 +1,6 @@
-package Media;
+package Media.Leaf;
 
-import Component.Media;
+import Media.Media;
 
 public abstract class LeafMediaComponent implements Media {
     public abstract void play(String level);
