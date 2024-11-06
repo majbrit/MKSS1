@@ -5,6 +5,7 @@ import Media.*;
 
 public class Main {
     public static void main(String[] args) {
+        int indent = 0;
 
         Text introText = new Text("A vacation to remember...");
 
@@ -34,6 +35,6 @@ public class Main {
         fullPresentation.addComponent(outroText);
 
 
-        fullPresentation.play("");
+        fullPresentation.play(indent);
     }
 }

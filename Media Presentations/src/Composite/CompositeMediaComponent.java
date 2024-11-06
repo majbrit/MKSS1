@@ -1,11 +1,12 @@
 package Composite;
 
-import Media.Media;
+import Component.Media;
+import Helpclasses.SpacePrinter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public  abstract class CompositeMediaComponent implements Media {
+public abstract class CompositeMediaComponent implements Media {
 
 
     protected List<Media> components = new ArrayList<>();
@@ -17,10 +18,11 @@ public  abstract class CompositeMediaComponent implements Media {
     protected abstract String getPlayMessage();
 
     @Override
-    public void play(String level) {
-        System.out.println(level + getPlayMessage());
+    public void play(int indent) {
+        SpacePrinter.printSpaces(indent);
+        System.out.println(getPlayMessage());
         for (Media component : components) {
-            component.play(level + "  ");
+            component.play(indent+2);
         }
     }
 }

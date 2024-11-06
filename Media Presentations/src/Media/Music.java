@@ -1,6 +1,8 @@
 package Media;
 
-public class Music implements Media {
+import Component.Media;
+
+public class Music extends LeafMediaComponent {
     private String MusicName;
 
     public Music(String MusicName) {
@@ -8,7 +10,8 @@ public class Music implements Media {
     }
 
     @Override
-    public void play(String level) {
-        System.out.println(level + "Playing music . " + MusicName);
+    public void play(int indent) {
+        super.play(indent);
+        System.out.println("Playing music . " + MusicName);
     }
 }

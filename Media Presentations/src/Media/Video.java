@@ -1,6 +1,8 @@
 package Media;
 
-public class Video implements Media {
+import Component.Media;
+
+public class Video extends LeafMediaComponent {
     private String VideoName;
 
     public Video(String VideoName) {
@@ -8,7 +10,8 @@ public class Video implements Media {
     }
 
     @Override
-    public void play(String level) {
-        System.out.println(level + "Playing Video " + VideoName);
+    public void play(int indent) {
+        super.play(indent);
+        System.out.println("Playing Video " + VideoName);
     }
 }

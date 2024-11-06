@@ -1,6 +1,8 @@
 package Media;
 
-public class Image implements Media {
+import Component.Media;
+
+public class Image extends LeafMediaComponent {
 
     private String pictureName;
 
@@ -9,7 +11,8 @@ public class Image implements Media {
     }
 
     @Override
-    public void play(String level) {
-        System.out.println(level + "Showing picture " + pictureName);
+    public void play(int indent) {
+        super.play(indent);
+        System.out.println("Showing picture " + pictureName);
     }
 }
