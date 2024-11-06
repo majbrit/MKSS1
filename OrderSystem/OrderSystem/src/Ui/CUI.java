@@ -1,22 +1,20 @@
 package Ui;
 
 import Common.Input;
+import Services.IItemFactory;
 import Entities.Item;
-import Entities.Order;
-import Entities.Product;
-import Entities.Service;
 import Services.OrderSystem;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CUI {
-
-    private OrderSystem OrderSystem;
-    private List<Item> items = new ArrayList<>();
+    private final OrderSystem OrderSystem;
 
     public CUI() {
         this.OrderSystem = new OrderSystem();
+    }
+
+    public void SetItemFactory(IItemFactory itemFactory){
+        OrderSystem.SetItemFactory(itemFactory);
     }
 
     public void menuloop() {
@@ -61,7 +59,6 @@ public class CUI {
         System.out.println("(2) Order service");
     }
 
-
     private void orderProduct() {
         System.out.println("Name: ");
         String name = Input.readString();
@@ -85,15 +82,14 @@ public class CUI {
     }
 
     private void finishOrder() {
-       printitems();
-       printsum();
-       printCheckoutDateTime();
+        printitems();
+        printsum();
+        printCheckoutDateTime();
     }
 
     private void printsum() {
         int sum = OrderSystem.getsum();
         System.out.println("Sum: " + formatPrice(sum));
-
     }
 
     private void printCheckoutDateTime() {
@@ -102,7 +98,7 @@ public class CUI {
     }
 
     private void printitems() {
-        items = OrderSystem.getitems();
+        List<Item> items = OrderSystem.getitems();
         for (Item item : items) {
             System.out.println(item.getDescription() + " = " + formatPrice(item.getTotalPrice()));
         }
@@ -111,5 +107,4 @@ public class CUI {
     private String formatPrice(int priceInCent) {
         return String.format("%.2f EUR", priceInCent / 100.0);
     }
-
 }

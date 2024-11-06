@@ -6,8 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Order {
-
-    private List<Item> items;
+    private final List<Item> items;
     private Date checkoutDateTime;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
@@ -15,11 +14,11 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Item product) {
         items.add(product);
     }
 
-    public void addService(Service service) {
+    public void addService(Item service) {
         items.add(service);
     }
 
@@ -43,7 +42,6 @@ public class Order {
         return simpleDateFormat.format(getCheckoutDateTime());
     }
 
-
     public int getSum() {
         int sum = 0;
         for (Item item : items) {
@@ -54,10 +52,8 @@ public class Order {
         return sum;
     }
 
-
     // Shorter and simpler conversion from cent to euro
     private String formatPrice(int priceInCent) {
         return String.format("%.2f EUR", priceInCent / 100.0);
     }
 }
-
