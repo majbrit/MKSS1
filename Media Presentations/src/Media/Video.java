@@ -10,8 +10,7 @@ public class Video extends LeafMediaComponent {
     }
 
     @Override
-    public void play(int indent) {
-        super.play(indent);
-        System.out.println("Playing Video " + VideoName);
+    public void play(String level) {
+        System.out.println(level + "Playing Video " + VideoName);
     }
 }

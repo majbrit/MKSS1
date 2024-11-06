@@ -11,8 +11,7 @@ public class Image extends LeafMediaComponent {
     }
 
     @Override
-    public void play(int indent) {
-        super.play(indent);
-        System.out.println("Showing picture " + pictureName);
+    public void play(String level) {
+        System.out.println(level + "Showing picture " + pictureName);
     }
 }

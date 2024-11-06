@@ -10,8 +10,7 @@ public class Music extends LeafMediaComponent {
     }
 
     @Override
-    public void play(int indent) {
-        super.play(indent);
-        System.out.println("Playing music . " + MusicName);
+    public void play(String level) {
+        System.out.println(level + "Playing music . " + MusicName);
     }
 }

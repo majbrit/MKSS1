@@ -9,8 +9,7 @@ public class Text extends LeafMediaComponent {
         this.content = content;
     }
     @Override
-    public void play(int indent) {
-        super.play(indent);
-        System.out.println(content);
+    public void play(String level) {
+        System.out.println(level + content);
     }
 }
