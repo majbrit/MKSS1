@@ -22,5 +22,4 @@ public abstract class Item {
     public abstract String getDescription();
 
     public abstract int getTotalPrice();
-
 }
