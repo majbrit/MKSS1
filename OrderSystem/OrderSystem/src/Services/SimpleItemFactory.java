@@ -10,6 +10,7 @@ public class SimpleItemFactory implements  IItemFactory {
     }
 
     public Item CreateService(String name, int persons, int hours){
+
         return new Service(name, persons, hours);
     }
 }
