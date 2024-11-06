@@ -28,4 +28,5 @@ public interface IActionButton {
      * @return deactivateCommand Command to deactivate the action.
      */
     public ICommand getDeactivateCommand();
+
 }

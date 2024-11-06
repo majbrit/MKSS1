@@ -5,6 +5,7 @@ public class Device1 implements IDevice{
     /**
      * Turn device on
      */
+
     public void on() {
         System.out.println("Device on");
     }

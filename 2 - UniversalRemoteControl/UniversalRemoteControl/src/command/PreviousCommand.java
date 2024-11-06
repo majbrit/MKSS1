@@ -13,6 +13,7 @@ public class PreviousCommand implements ICommand {
     /**
      * execute command
      */
+    @Override
     public void execute() {
         device.previous();
     }

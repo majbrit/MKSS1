@@ -13,6 +13,7 @@ public class NextCommand implements ICommand {
     /**
      * execute command
      */
+    @Override
     public void execute() {
         device.next();
     }

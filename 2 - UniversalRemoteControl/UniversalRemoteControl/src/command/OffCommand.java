@@ -13,6 +13,7 @@ public class OffCommand implements ICommand {
     /**
      * execute command
      */
+    @Override
     public void execute() {
         device.off();
     }

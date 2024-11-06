@@ -13,6 +13,7 @@ public class PauseCommand implements ICommand {
     /**
      * execute command
      */
+    @Override
     public void execute() {
         device.pause();
     }

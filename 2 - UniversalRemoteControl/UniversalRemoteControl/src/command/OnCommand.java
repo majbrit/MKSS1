@@ -13,6 +13,7 @@ public class OnCommand implements ICommand {
     /**
      * execute command
      */
+    @Override
     public void execute() {
         device.on();
     }
