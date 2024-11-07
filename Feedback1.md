@@ -10,6 +10,8 @@
 
 - [ ] No nested projects
 
+- [ ] Remove OrderSystem
+
 - [ ] write method names and variable names in lower case, except constructor
 
 ## Assignment 2:
