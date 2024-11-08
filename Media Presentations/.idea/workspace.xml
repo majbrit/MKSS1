@@ -5,16 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fac5cd6c-e2b4-4c4e-95ae-b341acab19d7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Component/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Component/Media.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Composite/CompositeMediaComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Composite/CompositeMediaComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Helpclasses/SpacePrinter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Media/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Media/Image.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Media/LeafMediaComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Media/LeafMediaComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Media/Music.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Media/Music.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Media/Text.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Media/Text.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Media/Video.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Media/Video.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/2 - UniversalRemoteControl.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/markdown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/project-template.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/UniversalRemoteControl.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/UniversalRemoteControl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/UniversalRemoteControlNew.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/command/ICommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/command/NextPreviousCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/command/OnOffCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/command/PlayPauseCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/device/Device1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/device/IDevice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/history/CommandHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/remotecontrol/IRemoteControl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/UniversalRemoteControl/src/remotecontrol/RemoteControl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/__MACOSX/UniversalRemoteControl/._.DS_Store" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/__MACOSX/UniversalRemoteControl/src/._.DS_Store" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/__MACOSX/UniversalRemoteControl/src/._Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2 - UniversalRemoteControl/__MACOSX/UniversalRemoteControl/src/remotecontrol/._.DS_Store" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/assignment2.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/assignment2.2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.1.vpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.1.vpp.bak_000f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.2.vpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.2.vpp.bak_000f" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.2.vpp.bak_001d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.2.vpp.bak_002d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2.2.vpp.bak_003d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Aufgabe2/subtask2_1.vpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +55,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2oU4B0BpeMCDlzlELgmnLPJBv8b" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -38,7 +69,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Majns/InformatikMaster/MKSS1/MKSS1/Media Presentations",
+    "last_opened_file_path": "C:/Majns/InformatikMaster/MKSS1/Abgaben/Exercise2/MKSS1Exercise2Assignment1AbidKwoczekSchoettner",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
