@@ -7,7 +7,6 @@ import java.util.List;
 
 public class OrderService {
     private Order order;
-    private EventHandler<OrderEvent> eventHandler;
     private ItemFactory itemFactory;
 
 
