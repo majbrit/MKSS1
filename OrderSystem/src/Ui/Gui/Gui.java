@@ -1,7 +1,6 @@
 package Ui.Gui;
-import Services.IItemFactory;
+import Services.ItemFactory;
 import Services.OrderService;
-import Services.SimpleItemFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,10 +9,10 @@ public class Gui extends Application {
     private Stage primaryStage;
     private Scene scene;
     private Menu menu;
-    private static IItemFactory itemFactory;
+    private static ItemFactory itemFactory;
     public static OrderService orderService;
 
-    public static void setItemFactory(IItemFactory itemFactory) {
+    public static void setItemFactory(ItemFactory itemFactory) {
         Gui.itemFactory = itemFactory;
         Gui.orderService = OrderService.getInstance();
         Gui.orderService.setItemFactory(itemFactory);
@@ -23,8 +22,6 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Order System GUI");
 
@@ -36,6 +33,4 @@ public class Gui extends Application {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
     }
-
-
 }
