@@ -1,7 +1,7 @@
 package Ui.Cui;
 
 import Common.Input;
-import Services.IItemFactory;
+import Services.ItemFactory;
 import Entities.Item;
 import Services.OrderService;
 
@@ -14,7 +14,7 @@ public class CUI {
         this.orderService = OrderService.getInstance();
     }
 
-    public void setItemFactory(IItemFactory itemFactory){
+    public void setItemFactory(ItemFactory itemFactory){
         orderService.setItemFactory(itemFactory);
     }
 

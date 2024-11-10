@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="cli" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="Main.OrderSystemMain" />
+    <module name="MKSS1" />
+    <option name="PROGRAM_PARAMETERS" value="cli" />
+    <option name="VM_PARAMETERS" value="--module-path ./OrderSystem/javafx-sdk-23.0.1/lib --add-modules=javafx.controls" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

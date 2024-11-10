@@ -1,20 +1,17 @@
 package Main;
 
-import Services.IItemFactory;
+import Services.ItemFactory;
 import Services.OrderService;
 import Services.SimpleItemFactory;
 import Ui.Cui.CUI;
-import Ui.Gui.Gui;
 import Ui.Gui.GuiMenu;
-import Ui.Gui.GuiStart;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
 public class OrderSystemMain extends Application {
-    private static IItemFactory itemFactory = new SimpleItemFactory();
-    public static void main(String[] args) {
+    private static final ItemFactory itemFactory = new SimpleItemFactory();
 
+    public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Please use ‘cli’ or ‘gui’ as an argument.");
             return;
@@ -39,8 +36,6 @@ public class OrderSystemMain extends Application {
         cui.setItemFactory(itemFactory);
         cui.menuLoop();
     }
-
-
 
     @Override
     public void start(Stage stage) throws Exception {
