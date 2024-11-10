@@ -9,6 +9,7 @@ public class Order {
     private final List<Item> items;
     private Date checkoutDateTime;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    public int id;
 
     public Order() {
         this.items = new ArrayList<>();

@@ -85,6 +85,7 @@ public class CUI {
         printItems();
         printSum();
         printCheckoutDateTime();
+        orderService.finishOrder();
     }
 
     private void printSum() {
