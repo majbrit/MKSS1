@@ -99,7 +99,7 @@ public class CUI {
     private void printItems() {
         List<Item> items = orderService.getItems();
         for (Item item : items) {
-            System.out.println(item);
+            System.out.println(item.toString());
         }
     }
 

@@ -30,20 +30,15 @@ public class OrderService {
     }
 
     public void addProduct(String name, int price, int quantity) {
-        System.out.println("Adding product " + name + " with price " + price);
         order.addProduct(itemFactory.createProduct(name, price, quantity));
-
     }
 
     public void addService(String name, int persons, int hours) {
         order.addService(itemFactory.createService(name, persons, hours));
-
     }
 
     public List<Item> getItems() {
-        System.out.println("Getting items");
         order.sortItems();
-        System.out.println(order.getItems());
         return order.getItems();
     }
 
