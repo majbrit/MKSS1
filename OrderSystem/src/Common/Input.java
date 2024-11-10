@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 public class Input {
-
 	public static boolean readBoolean() {
 		boolean result;
 		try {

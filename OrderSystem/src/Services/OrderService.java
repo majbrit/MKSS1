@@ -7,21 +7,22 @@ import java.util.List;
 
 public class OrderService {
     private Order order;
-    private IItemFactory itemFactory;
+    private EventHandler<OrderEvent> eventHandler;
+    private ItemFactory itemFactory;
+
 
     private static final class InstanceHolder {
         static final OrderService INSTANCE = new OrderService();
     }
 
     private OrderService() {
-
     }
 
     public static OrderService getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
-    public void setItemFactory(IItemFactory itemFactory){
+    public void setItemFactory(ItemFactory itemFactory){
         this.itemFactory = itemFactory;
     }
 

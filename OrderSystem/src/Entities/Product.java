@@ -16,10 +16,11 @@ public class Product extends Item {
     public int getTotalPrice() {
         return unitPrice * getQuantity();
     }
+
     public String getDescription() {
         return getQuantity() + " * " + getName() + " = " + formatPrice(getTotalPrice());
     }
-    @Override
+
     public String toString() {
         return getQuantity() + " * " + getName() + " = " + formatPrice(getTotalPrice());
     }
