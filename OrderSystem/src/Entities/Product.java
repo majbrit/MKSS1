@@ -17,9 +17,12 @@ public class Product extends Item {
         return unitPrice * getQuantity();
     }
     public String getDescription() {
-        return getQuantity() + " * " + getName();
+        return getQuantity() + " * " + getName() + " = " + formatPrice(getTotalPrice());
     }
+    @Override
     public String toString() {
-        return getQuantity() + " * " + getName();
+        return getQuantity() + " * " + getName() + " = " + formatPrice(getTotalPrice());
     }
+
+
 }

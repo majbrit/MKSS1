@@ -6,7 +6,7 @@ import Services.SimpleItemFactory;
 import Ui.Cui.CUI;
 import Ui.Gui.Gui;
 import Ui.Gui.GuiMenu;
-import Ui.Gui.GuiStart;
+import Ui.Gui.SceneController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -45,12 +45,13 @@ public class OrderSystemMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("Gui is starting...");
-
         OrderService.getInstance().setItemFactory(itemFactory);
-        //  GuiStart.launch(args);
-
         OrderService.getInstance().newOrder();
-        GuiMenu guiMenu = new GuiMenu();
-        guiMenu.show();
+        SceneController sceneController = new SceneController(stage);
+        //GuiMenu guiMenu = new GuiMenu(stage);
+        //guiMenu.show();
+        //Gui gui = new Gui(stage);
+        //gui.show();
+
     }
 }

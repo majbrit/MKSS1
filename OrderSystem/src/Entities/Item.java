@@ -23,5 +23,8 @@ public abstract class Item {
 
     public abstract int getTotalPrice();
 
-    public abstract String toString();
+    public String formatPrice(int priceInCent) {
+        return String.format("%.2f EUR", priceInCent / 100.0);
+    }
+
 }

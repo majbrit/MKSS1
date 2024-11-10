@@ -22,9 +22,10 @@ public class Service extends Item {
         return getUnitPrice() * getHours() * getPersons();
     }
     public String getDescription() {
-        return getPersons() + " persons for " + getHours() + "h of " + getName();
+        return getPersons() + " persons for " + getHours() + "h of " + getName()  + " = " + formatPrice(getTotalPrice());
     }
+    @Override
     public String toString() {
-        return getPersons() + " persons for " + getHours() + "h of " + getName();
+        return getPersons() + " persons for " + getHours() + "h of " + getName()+ " = " + formatPrice(getTotalPrice());
     }
 }

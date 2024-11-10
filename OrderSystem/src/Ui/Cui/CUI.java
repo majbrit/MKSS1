@@ -88,8 +88,7 @@ public class CUI {
     }
 
     private void printSum() {
-        int sum = orderService.getSum();
-        System.out.println("Sum: " + formatPrice(sum));
+        System.out.println(orderService.getSumString());
     }
 
     private void printCheckoutDateTime() {
@@ -100,11 +99,9 @@ public class CUI {
     private void printItems() {
         List<Item> items = orderService.getItems();
         for (Item item : items) {
-            System.out.println(item.getDescription() + " = " + formatPrice(item.getTotalPrice()));
+            System.out.println(item);
         }
     }
 
-    private String formatPrice(int priceInCent) {
-        return String.format("%.2f EUR", priceInCent / 100.0);
-    }
+
 }

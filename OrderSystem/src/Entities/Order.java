@@ -51,4 +51,13 @@ public class Order {
         }
         return sum;
     }
+
+    public String getSumString() {
+        int sum = getSum();
+        return formatPrice(sum);
+    }
+
+    private String formatPrice(int priceInCent) {
+        return String.format("%.2f EUR", priceInCent / 100.0);
+    }
 }
