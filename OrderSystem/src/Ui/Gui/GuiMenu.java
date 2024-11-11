@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -30,6 +31,8 @@ public class GuiMenu{
     private TextField productPrice;
     @FXML
     private TextField productQuantity;
+    @FXML
+    private Label productError;
 
     // service
     @FXML
@@ -38,6 +41,8 @@ public class GuiMenu{
     private TextField numberOfPersons;
     @FXML
     private TextField hours;
+    @FXML
+    private Label serviceError;
 
 
     // shopping list
@@ -48,45 +53,22 @@ public class GuiMenu{
     private Stage stage;
     private SceneController sceneController;
 
-    /*
-    public GuiMenu(Stage stage) {
-       this.stage = stage;
-       init();
-    }*/
-
     public GuiMenu(SceneController sceneController){
         this.sceneController = sceneController;
     }
 
-    public void startMenu(){
-        //init();
-        basketList.getItems().clear();
-    }
-
     public void init() {
-       /* FXMLLoader loader = new FXMLLoader(getClass().getResource("GuiMenu.fxml"));
-        loader.setController(this);
-        try {
-            scene = new Scene((Parent) loader.load());
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.setTitle("Order System");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.show();*/
-
         TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setPrefWidth(300);
         descriptionColumn.setResizable(true);
         basketList.getColumns().addAll(descriptionColumn);
-
     }
 
     @FXML
     private void addProduct() {
         try {
+            productError.setText("");
             String name = productName.getText();
             int price = Integer.parseInt(productPrice.getText());
             int quantity = Integer.parseInt(productQuantity.getText());
@@ -96,13 +78,14 @@ public class GuiMenu{
             productPrice.clear();
             productQuantity.clear();
         } catch (NumberFormatException e) {
-            System.out.println("Invalid price or quantity");
+            productError.setText("Invalid price or quantity");
         }
     }
 
     @FXML
     private void addService() {
         try {
+            serviceError.setText("");
             String type = serviceType.getText();
             int personNumber = Integer.parseInt(numberOfPersons.getText());
             int hoursInt = Integer.parseInt(hours.getText());
@@ -112,7 +95,7 @@ public class GuiMenu{
             numberOfPersons.clear();
             hours.clear();
         } catch (NumberFormatException e) {
-            System.out.println("Invalid price or quantity");
+            serviceError.setText("Invalid number of persons or hours");
         }
 
     }
@@ -125,7 +108,7 @@ public class GuiMenu{
 
     @FXML
     private void buyItems() throws IOException {
-        //GuiOrderSummary guiOrderSummary = new GuiOrderSummary(stage);
+        basketList.getItems().clear();
         sceneController.startGuiOrderSummary();
     }
 

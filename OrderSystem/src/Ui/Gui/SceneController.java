@@ -45,7 +45,6 @@ public class SceneController {
 
     public void startGuiMenu() {
         startStage(menuScene);
-        guiMenu.startMenu();
     }
     public void startGuiOrderSummary() {
         startStage(orderScene);
