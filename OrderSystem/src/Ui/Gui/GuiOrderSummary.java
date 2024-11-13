@@ -48,8 +48,9 @@ public class GuiOrderSummary {
     }
 
     private void createBill() {
+        OrderService.getInstance().finishOrder();
         List<Item> items = OrderService.getInstance().getItems();
-        String checkOut = OrderService.getInstance().checkoutDateTime();
+        String checkOut = OrderService.getInstance().getCheckoutDateTime();
         String sumString = OrderService.getInstance().getSumString();
 
         ArrayList<Item> arrayItems = new ArrayList<>(items);

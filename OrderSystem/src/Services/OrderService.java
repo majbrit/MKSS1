@@ -46,11 +46,16 @@ public class OrderService {
         return order.getItems();
     }
 
-    public String checkoutDateTime(){
-        order.setCheckoutDateTime();
-        orderRepository.updateOrder(order);
+
+    public String getCheckoutDateTime(){
         return order.checkoutDateTime();
     }
+
+    public void finishOrder() {
+        order.setCheckoutDateTime();
+        orderRepository.updateOrder(order);
+    }
+
     public List<Order> getAllOrders() {
         return orderRepository.getAllOrders();
     }

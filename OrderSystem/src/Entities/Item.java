@@ -19,7 +19,8 @@ public abstract class Item {
         return unitPrice;
     }
 
-
+    //TODO find other solution in gui
+    public abstract String getDescription();
 
     public abstract int getTotalPrice();
 

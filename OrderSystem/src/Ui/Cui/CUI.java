@@ -91,6 +91,7 @@ public class CUI {
     }
 
     private void finishOrder() {
+        orderService.finishOrder();
         printItems();
         printSum();
         printCheckoutDateTime();
@@ -101,7 +102,7 @@ public class CUI {
     }
 
     private void printCheckoutDateTime() {
-        String date = orderService.checkoutDateTime();
+        String date = orderService.getcheckoutDateTime();
         System.out.println("Checkout at " + date);
     }
 
