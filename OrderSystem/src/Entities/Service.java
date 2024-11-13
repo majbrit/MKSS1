@@ -23,10 +23,7 @@ public class Service extends Item {
     }
 
     //TODO find other solution for gui
-    @Override
-    public String getDescription() {
-        return getPersons() + " persons for " + getHours() + "h of " + getName()  + " = " + formatPrice(getTotalPrice());
-    }
+
 
     @Override
     public String toString() {

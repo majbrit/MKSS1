@@ -2,6 +2,8 @@ package Ui.Gui;
 
 import Entities.Item;
 import Services.OrderService;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -59,10 +62,11 @@ public class GuiMenu{
 
     public void init() {
         TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        descriptionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
+
         descriptionColumn.setPrefWidth(300);
         descriptionColumn.setResizable(true);
-        basketList.getColumns().addAll(descriptionColumn);
+        basketList.getColumns().add(descriptionColumn);
     }
 
     @FXML
