@@ -19,7 +19,7 @@ public abstract class Item {
         return unitPrice;
     }
 
-    public abstract String getDescription();
+
 
     public abstract int getTotalPrice();
 

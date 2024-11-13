@@ -1,9 +1,10 @@
 package Ui.Cui;
 
 import Common.Input;
-import Services.ItemFactory;
+import Entities.Order;
 import Entities.Item;
 import Services.OrderService;
+import Services.SimpleItemFactory;
 
 import java.util.List;
 
@@ -11,12 +12,12 @@ public class CUI {
     private final OrderService orderService;
 
     public CUI() {
+
         this.orderService = OrderService.getInstance();
+        this.orderService.setItemFactory(new SimpleItemFactory());
     }
 
-    public void setItemFactory(ItemFactory itemFactory){
-        orderService.setItemFactory(itemFactory);
-    }
+
 
     public void menuLoop() {
         int input;
@@ -34,6 +35,12 @@ public class CUI {
                         break;
                     case 2:
                         orderService();
+                        break;
+                    case 3:
+                        viewAllOrders();
+                        break;
+                    case 4:
+                        deleteAllOrders();
                         break;
                     default:
                         System.out.println("invalid");
@@ -57,6 +64,8 @@ public class CUI {
         System.out.println("(0) Finish order");
         System.out.println("(1) Order product");
         System.out.println("(2) Order service");
+        System.out.println("(3) View all orders");
+        System.out.println("(4) Delete all orders");
     }
 
     private void orderProduct() {
@@ -99,8 +108,33 @@ public class CUI {
     private void printItems() {
         List<Item> items = orderService.getItems();
         for (Item item : items) {
-            System.out.println(item.toString());
+            System.out.println(item);
         }
+    }
+    private void viewAllOrders() {
+        List<Order> allOrders = orderService.getAllOrders();
+        if (allOrders.isEmpty()) {
+            System.out.println("No orders available.");
+            return;
+        }
+
+        for (Order order : allOrders) {
+
+            String orderDate = order.getCheckoutDateTime() != null ? String.valueOf(order.getCheckoutDateTime()) : "Not yet checked out";
+            System.out.println("Order placed at: " + orderDate);
+
+            for (Item item : order.getItems()) {
+                System.out.println(item.toString());
+            }
+            System.out.println("Total: " + order.getSumString());
+            System.out.println("------------------------------------------------");
+        }
+    }
+
+
+    private void deleteAllOrders() {
+        orderService.clearAllOrders();
+        System.out.println("All orders have been deleted.");
     }
 
 

@@ -36,7 +36,6 @@ public class OrderSystemMain extends Application {
     private static void startCLI() {
         System.out.println("Cui is starting...");
         CUI cui = new CUI();
-        cui.setItemFactory(itemFactory);
         cui.menuLoop();
     }
 

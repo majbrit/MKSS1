@@ -8,13 +8,14 @@ import java.util.List;
 public class OrderService {
     private Order order;
     private ItemFactory itemFactory;
-
+    private OrderRepository orderRepository;
 
     private static final class InstanceHolder {
         static final OrderService INSTANCE = new OrderService();
     }
 
     private OrderService() {
+        this.orderRepository = new OrderRepository();
     }
 
     public static OrderService getInstance() {
@@ -27,14 +28,17 @@ public class OrderService {
 
     public void newOrder() {
         this.order = new Order();
+        orderRepository.createOrder(order);
     }
 
     public void addProduct(String name, int price, int quantity) {
         order.addProduct(itemFactory.createProduct(name, price, quantity));
+        orderRepository.updateOrder(order);
     }
 
     public void addService(String name, int persons, int hours) {
         order.addService(itemFactory.createService(name, persons, hours));
+        orderRepository.updateOrder(order);
     }
 
     public List<Item> getItems() {
@@ -44,7 +48,15 @@ public class OrderService {
 
     public String checkoutDateTime(){
         order.setCheckoutDateTime();
+        orderRepository.updateOrder(order);
         return order.checkoutDateTime();
+    }
+    public List<Order> getAllOrders() {
+        return orderRepository.getAllOrders();
+    }
+
+    public void clearAllOrders() {
+        orderRepository.deleteAllOrders();
     }
 
     public int getSum(){
