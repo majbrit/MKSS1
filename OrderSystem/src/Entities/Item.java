@@ -19,8 +19,6 @@ public abstract class Item {
         return unitPrice;
     }
 
-
-
     public abstract int getTotalPrice();
 
     public String formatPrice(int priceInCent) {
