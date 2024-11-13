@@ -102,7 +102,7 @@ public class CUI {
     }
 
     private void printCheckoutDateTime() {
-        String date = orderService.getcheckoutDateTime();
+        String date = orderService.getCheckoutDateTime();
         System.out.println("Checkout at " + date);
     }
 
