@@ -3,6 +3,7 @@ package Ui.Cui;
 import Common.Input;
 import Entities.Order;
 import Entities.Item;
+import Services.OrderRepository;
 import Services.OrderService;
 import Services.SimpleItemFactory;
 
@@ -14,6 +15,7 @@ public class CUI {
     public CUI() {
 
         this.orderService = OrderService.getInstance();
+        this.orderService.setOrderRepository(new OrderRepository());
         this.orderService.setItemFactory(new SimpleItemFactory());
     }
 

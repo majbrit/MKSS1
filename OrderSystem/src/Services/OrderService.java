@@ -8,15 +8,13 @@ import java.util.List;
 public class OrderService {
     private Order order;
     private ItemFactory itemFactory;
-    private OrderRepository orderRepository;
+    private IorderRepository orderRepository;
 
     private static final class InstanceHolder {
         static final OrderService INSTANCE = new OrderService();
     }
 
-    private OrderService() {
-        this.orderRepository = new OrderRepository();
-    }
+
 
     public static OrderService getInstance() {
         return InstanceHolder.INSTANCE;
@@ -24,6 +22,9 @@ public class OrderService {
 
     public void setItemFactory(ItemFactory itemFactory){
         this.itemFactory = itemFactory;
+    }
+    public void setOrderRepository(IorderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     public void newOrder() {
@@ -33,12 +34,13 @@ public class OrderService {
 
     public void addProduct(String name, int price, int quantity) {
         order.addProduct(itemFactory.createProduct(name, price, quantity));
-        orderRepository.updateOrder(order);
+        updateOrder();
+
     }
 
     public void addService(String name, int persons, int hours) {
         order.addService(itemFactory.createService(name, persons, hours));
-        orderRepository.updateOrder(order);
+        updateOrder();
     }
 
     public List<Item> getItems() {
@@ -53,7 +55,7 @@ public class OrderService {
 
     public void finishOrder() {
         order.setCheckoutDateTime();
-        orderRepository.updateOrder(order);
+        updateOrder();
     }
 
     public List<Order> getAllOrders() {
@@ -62,6 +64,10 @@ public class OrderService {
 
     public void clearAllOrders() {
         orderRepository.deleteAllOrders();
+    }
+
+    private void updateOrder() {
+        orderRepository.updateOrder(order);
     }
 
     public int getSum(){
