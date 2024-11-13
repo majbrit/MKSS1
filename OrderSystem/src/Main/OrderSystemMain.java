@@ -1,6 +1,7 @@
 package Main;
 
 import Services.ItemFactory;
+import Services.OrderRepository;
 import Services.OrderService;
 import Services.SimpleItemFactory;
 import Ui.Cui.CUI;
@@ -42,13 +43,11 @@ public class OrderSystemMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("Gui is starting...");
+        OrderService.getInstance().setOrderRepository(new OrderRepository());
         OrderService.getInstance().setItemFactory(itemFactory);
         OrderService.getInstance().newOrder();
         SceneController sceneController = new SceneController(stage);
-        //GuiMenu guiMenu = new GuiMenu(stage);
-        //guiMenu.show();
-        //Gui gui = new Gui(stage);
-        //gui.show();
+
 
     }
 }
