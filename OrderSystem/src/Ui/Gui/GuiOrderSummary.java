@@ -2,6 +2,7 @@ package Ui.Gui;
 
 import Entities.Item;
 import Services.OrderService;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,8 @@ public class GuiOrderSummary {
 
     public void init() {
         TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        descriptionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
+
         descriptionColumn.setPrefWidth(300);
         descriptionColumn.setResizable(true);
         basketList.getColumns().addAll(descriptionColumn);
