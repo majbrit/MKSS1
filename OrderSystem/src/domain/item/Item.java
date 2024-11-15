@@ -1,4 +1,4 @@
-package Entities;
+package domain.item;
 
 // Abstract class is useful here, as there are many common functions and properties that can be implemented here in summarised form
 public abstract class Item {

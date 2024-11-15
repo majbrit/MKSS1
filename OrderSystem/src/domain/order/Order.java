@@ -1,4 +1,6 @@
-package Entities;
+package domain.order;
+
+import domain.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;

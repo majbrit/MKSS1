@@ -1,7 +1,7 @@
-package Services;
+package domain.factory;
 
-import Entities.Product;
-import Entities.Service;
+import domain.item.Product;
+import domain.item.Service;
 
 public interface ItemFactory {
     Product createProduct(String name, int unitPrice, int quantity);

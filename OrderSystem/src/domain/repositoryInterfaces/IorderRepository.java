@@ -1,6 +1,6 @@
-package Services;
+package domain.repositoryInterfaces;
 
-import Entities.Order;
+import domain.order.Order;
 
 import java.util.List;
 

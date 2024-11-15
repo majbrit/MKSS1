@@ -1,7 +1,9 @@
-package Services;
+package application;
 
-import Entities.Item;
-import Entities.Order;
+import domain.repositoryInterfaces.IorderRepository;
+import domain.item.Item;
+import domain.factory.ItemFactory;
+import domain.order.Order;
 
 import java.util.List;
 

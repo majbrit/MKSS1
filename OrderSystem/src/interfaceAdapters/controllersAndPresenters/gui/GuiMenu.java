@@ -1,13 +1,11 @@
-package Ui.Gui;
+package interfaceAdapters.controllersAndPresenters.gui;
 
-import Entities.Item;
-import Services.OrderRepository;
-import Services.OrderService;
-import Services.SimpleItemFactory;
+import domain.item.Item;
+import interfaceAdapters.gateway.OrderRepository;
+import application.OrderService;
+import domain.factory.SimpleItemFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;

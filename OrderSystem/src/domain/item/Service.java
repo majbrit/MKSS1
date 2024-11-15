@@ -1,4 +1,4 @@
-package Entities;
+package domain.item;
 
 public class Service extends Item {
     private int hours, persons;

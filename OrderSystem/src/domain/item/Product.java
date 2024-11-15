@@ -1,4 +1,4 @@
-package Entities;
+package domain.item;
 
 public class Product extends Item {
     private int quantity;

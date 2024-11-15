@@ -1,11 +1,9 @@
-package Main;
+package frameworksAndDrivers.main;
 
-import Services.ItemFactory;
-import Services.OrderRepository;
-import Services.OrderService;
-import Services.SimpleItemFactory;
-import Ui.Cui.CUI;
-import Ui.Gui.GuiMenu;
+import domain.factory.ItemFactory;
+import domain.factory.SimpleItemFactory;
+import interfaceAdapters.controllersAndPresenters.cui.CUI;
+import interfaceAdapters.controllersAndPresenters.gui.GuiMenu;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

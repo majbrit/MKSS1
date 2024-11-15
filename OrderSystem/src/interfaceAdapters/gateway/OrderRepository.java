@@ -1,6 +1,7 @@
-package Services;
+package interfaceAdapters.gateway;
 
-import Entities.Order;
+import domain.repositoryInterfaces.IorderRepository;
+import domain.order.Order;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package Ui.Cui;
+package interfaceAdapters.controllersAndPresenters.cui;
 
-import Common.Input;
-import Entities.Order;
-import Entities.Item;
-import Services.OrderRepository;
-import Services.OrderService;
-import Services.SimpleItemFactory;
+import common.Input;
+import domain.order.Order;
+import domain.item.Item;
+import interfaceAdapters.gateway.OrderRepository;
+import application.OrderService;
+import domain.factory.SimpleItemFactory;
 
 import java.util.List;
 

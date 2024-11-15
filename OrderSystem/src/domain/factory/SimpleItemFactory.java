@@ -1,9 +1,9 @@
-package Services;
+package domain.factory;
 
-import Entities.Product;
-import Entities.Service;
+import domain.item.Product;
+import domain.item.Service;
 
-public class SimpleItemFactory implements  ItemFactory {
+public class SimpleItemFactory implements ItemFactory {
     public Product createProduct(String name, int unitPrice, int quantity) {
         return new Product(name, unitPrice, quantity);
     }
