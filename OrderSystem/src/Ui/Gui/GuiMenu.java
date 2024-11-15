@@ -1,24 +1,24 @@
 package Ui.Gui;
 
 import Entities.Item;
+import Services.OrderRepository;
 import Services.OrderService;
+import Services.SimpleItemFactory;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +54,37 @@ public class GuiMenu{
 
 
     private Stage stage;
-    private SceneController sceneController;
+    private FXMLLoader menuFxmlLoader;
+    private Scene menuScene;
 
-    public GuiMenu(SceneController sceneController){
-        this.sceneController = sceneController;
+    private Stage popupWindow;
+    private Label sumLabel;
+    private Label dateLabel;
+    private TableView<Item> basketListSummary;
+    private Scene scenePopUp;
+
+
+    public GuiMenu(Stage stage){
+        OrderService.getInstance().setOrderRepository(new OrderRepository());
+        OrderService.getInstance().setItemFactory(new SimpleItemFactory());
+        OrderService.getInstance().newOrder();
+
+        this.stage = stage;
+        menuFxmlLoader = new FXMLLoader(getClass().getResource("GuiMenu.fxml"));
+        menuFxmlLoader.setController(this);
+        try {
+            menuScene = new Scene((Parent) menuFxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        init();
+
+        stage.setScene(menuScene);
+        stage.setMaximized(true);
+        stage.setTitle("Order System");
+
+        stage.show();
     }
 
     public void init() {
@@ -67,6 +94,8 @@ public class GuiMenu{
         descriptionColumn.setPrefWidth(300);
         descriptionColumn.setResizable(true);
         basketList.getColumns().add(descriptionColumn);
+
+        createPopupWindow();
     }
 
     @FXML
@@ -110,10 +139,90 @@ public class GuiMenu{
         basketList.setItems(FXCollections.<Item>observableArrayList(arrayItems));
     }
 
+    private void createPopupWindow() {
+        popupWindow=new Stage();
+
+        popupWindow.initModality(Modality.APPLICATION_MODAL);
+        popupWindow.setTitle("OrderSummary");
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefSize(800, 400);
+        borderPane.setStyle("-fx-background-color: #000022;");
+
+        VBox topVBox = new VBox();
+        topVBox.setPrefSize(800, 46);
+        Label titleLabel = new Label("Bill");
+        titleLabel.setPrefSize(800, 50);
+        titleLabel.setTextFill(javafx.scene.paint.Color.WHITE);
+        titleLabel.setStyle("-fx-alignment: center;");
+        topVBox.getChildren().add(titleLabel);
+        borderPane.setTop(topVBox);
+
+        VBox centerVBox = new VBox();
+        centerVBox.setPrefSize(100, 200);
+        centerVBox.setStyle("-fx-background-color: #eeeeee;");
+        centerVBox.setPadding(new Insets(30, 30, 30, 30));
+
+        basketListSummary = new TableView<>();
+        basketListSummary.setPrefSize(200, 200);
+        sumLabel = new Label("sum");
+        sumLabel.setPrefSize(557, 17);
+        dateLabel = new Label("date");
+        dateLabel.setPrefSize(558, 17);
+
+        centerVBox.getChildren().addAll(basketListSummary, sumLabel, dateLabel);
+        borderPane.setCenter(centerVBox);
+
+        Button newOrderButton = new Button("Place new order");
+        newOrderButton.setPadding(new Insets(10, 10, 10, 10));
+        borderPane.setBottom(newOrderButton);
+        BorderPane.setMargin(newOrderButton, new Insets(10, 10, 10, 10));
+        newOrderButton.setOnAction(event -> makeNewOrder());
+
+
+
+        TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
+        descriptionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
+
+        descriptionColumn.setPrefWidth(300);
+        descriptionColumn.setResizable(true);
+        basketListSummary.getColumns().add(descriptionColumn);
+
+        scenePopUp= new Scene(borderPane);
+
+    }
+
     @FXML
     private void buyItems() throws IOException {
+
+        OrderService.getInstance().finishOrder();
+        List<Item> items = OrderService.getInstance().getItems();
+        String checkOut = OrderService.getInstance().getCheckoutDateTime();
+        String sumString = OrderService.getInstance().getSumString();
+
+        ArrayList<Item> arrayItems = new ArrayList<>(items);
+        basketListSummary.setItems(FXCollections.<Item>observableArrayList(arrayItems));
+
+        sumLabel.setText("Sum: " + sumString);
+        dateLabel.setText("Checkout at " + checkOut);
+
+
+
+        popupWindow.setScene(scenePopUp);
+
+        popupWindow.setOnCloseRequest(event -> makeNewOrder());
+
+        popupWindow.showAndWait();
+
+       /* basketList.getItems().clear();
+        sceneController.startGuiOrderSummary();*/
+    }
+
+    private void makeNewOrder() {
         basketList.getItems().clear();
-        sceneController.startGuiOrderSummary();
+        basketListSummary.getItems().clear();
+        OrderService.getInstance().newOrder();
+        popupWindow.close();
     }
 
 
