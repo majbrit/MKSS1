@@ -1,6 +1,12 @@
 package interfaceAdapters.controllersAndPresenters.gui;
 
+import application.boundaries.*;
+import application.usecases.*;
+import domain.factory.ItemFactory;
 import domain.item.Item;
+import domain.item.Product;
+import domain.item.Service;
+import domain.repositoryInterfaces.IOrderRepository;
 import interfaceAdapters.gateway.OrderRepository;
 import application.OrderService;
 import domain.factory.SimpleItemFactory;
@@ -22,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GuiMenu{
+public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput {
     private Scene scene;
     private List<Item> items;
 
@@ -64,11 +70,39 @@ public class GuiMenu{
 
     private UUID orderID;
 
+    // use case input boundaries
+    private ICreateOrderInput createOrderInput;
+    private IAddProductInput addProductinput;
+    private IAddServiceInput addServiceInput;
+    private IClearOrdersInput clearOrdersInput;
+    private IFinishOrderInput finishOrderInput;
+    private IGetAllOrdersInput getAllOrdersInput;
+    private IGetOrderSummaryInput getOrderSummaryInput;
 
-    public GuiMenu(Stage stage){
+
+
+
+    public GuiMenu(Stage stage, IOrderRepository orderRepository, ItemFactory itemFactory) {
+        this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
+        this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
+        this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
+        this.clearOrdersInput = new ClearOrdersUseCase(this, orderRepository);
+        this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
+        this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
+        this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
+
+
+
+
         OrderService.getInstance().setOrderRepository(new OrderRepository());
         OrderService.getInstance().setItemFactory(new SimpleItemFactory());
+
+        //TODO handle everything over use case, so this can be deleted:
         orderID = OrderService.getInstance().newOrder();
+
+        createOrderInput.createOrder();
+
+
 
         this.stage = stage;
         menuFxmlLoader = new FXMLLoader(getClass().getResource("GuiMenu.fxml"));
@@ -106,8 +140,14 @@ public class GuiMenu{
             String name = productName.getText();
             int price = Integer.parseInt(productPrice.getText());
             int quantity = Integer.parseInt(productQuantity.getText());
+            //TODO handle everything over use case, so this can be deleted:
             OrderService.getInstance().addProduct(orderID, name, price, quantity);
             updateList();
+
+
+            addProductinput.addProduct(orderID, name, price, quantity);
+
+
             productName.clear();
             productPrice.clear();
             productQuantity.clear();
@@ -123,8 +163,15 @@ public class GuiMenu{
             String type = serviceType.getText();
             int personNumber = Integer.parseInt(numberOfPersons.getText());
             int hoursInt = Integer.parseInt(hours.getText());
+
+            //TODO handle everything over use case, so this can be deleted:
             OrderService.getInstance().addService(orderID, type, personNumber, hoursInt);
             updateList();
+
+            addServiceInput.addService(orderID, type, personNumber, hoursInt);
+
+
+
             serviceType.clear();
             numberOfPersons.clear();
             hours.clear();
@@ -135,7 +182,10 @@ public class GuiMenu{
     }
 
     private void updateList() {
+        //TODO handle everything over use case, so this can be deleted:
         items = OrderService.getInstance().getItems();
+
+
         ArrayList<Item> arrayItems = new ArrayList<>(items);
         basketList.setItems(FXCollections.<Item>observableArrayList(arrayItems));
     }
@@ -193,11 +243,13 @@ public class GuiMenu{
 
     @FXML
     private void buyItems() throws IOException {
-
+        //TODO handle everything over use case, so this can be deleted:
         OrderService.getInstance().finishOrder(orderID);
         List<Item> items = OrderService.getInstance().getItems();
         String checkOut = OrderService.getInstance().getCheckoutDateTime();
         String sumString = OrderService.getInstance().getSumString();
+
+
 
         ArrayList<Item> arrayItems = new ArrayList<>(items);
         basketListSummary.setItems(FXCollections.<Item>observableArrayList(arrayItems));
@@ -213,8 +265,41 @@ public class GuiMenu{
     private void makeNewOrder() {
         basketList.getItems().clear();
         basketListSummary.getItems().clear();
+
+        //TODO handle everything over use case, so this can be deleted:
         orderID = OrderService.getInstance().newOrder();
+
+        createOrderInput.createOrder();
+
         popupWindow.close();
     }
 
+    @Override
+    public void onAddProductResult(boolean updated) {
+        if (!updated) {
+            //TODO show text in gui
+            System.out.println("Product could not be added");
+        } else {
+            updateList();
+        }
+    }
+
+    @Override
+    public void onAddServiceResult(boolean updated) {
+        if(!updated) {
+            //TODO show text in gui
+            System.out.println("Service could not be added");
+        } else {
+            updateList();
+        }
+    }
+
+    @Override
+    public void onCreateOrderResult(UUID orderId) {
+        if(orderId == null) {
+            //TODO show text in gui
+            System.out.println("Order could not be created");
+        }
+        this.orderID = orderId;
+    }
 }

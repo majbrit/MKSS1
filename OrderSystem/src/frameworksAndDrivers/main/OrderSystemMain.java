@@ -2,14 +2,17 @@ package frameworksAndDrivers.main;
 
 import domain.factory.ItemFactory;
 import domain.factory.SimpleItemFactory;
+import domain.repositoryInterfaces.IOrderRepository;
 import interfaceAdapters.controllersAndPresenters.cui.CUI;
 import interfaceAdapters.controllersAndPresenters.gui.GuiMenu;
 
+import interfaceAdapters.gateway.OrderRepository;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class OrderSystemMain extends Application {
     private static final ItemFactory itemFactory = new SimpleItemFactory();
+    private static final IOrderRepository orderRepository = new OrderRepository();
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -32,7 +35,7 @@ public class OrderSystemMain extends Application {
 
     private static void startCLI() {
         System.out.println("Cui is starting...");
-        CUI cui = new CUI();
+        CUI cui = new CUI(orderRepository, itemFactory);
         cui.menuLoop();
     }
 
@@ -41,7 +44,7 @@ public class OrderSystemMain extends Application {
         System.out.println("Gui is starting...");
 
         //SceneController sceneController = new SceneController(stage);
-        GuiMenu guiMenu = new GuiMenu(stage);
+        GuiMenu guiMenu = new GuiMenu(stage, orderRepository, itemFactory);
 
 
     }
