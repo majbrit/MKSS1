@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GuiMenu{
     private Scene scene;
@@ -61,11 +62,13 @@ public class GuiMenu{
     private TableView<Item> basketListSummary;
     private Scene scenePopUp;
 
+    private UUID orderID;
+
 
     public GuiMenu(Stage stage){
         OrderService.getInstance().setOrderRepository(new OrderRepository());
         OrderService.getInstance().setItemFactory(new SimpleItemFactory());
-        OrderService.getInstance().newOrder();
+        orderID = OrderService.getInstance().newOrder();
 
         this.stage = stage;
         menuFxmlLoader = new FXMLLoader(getClass().getResource("GuiMenu.fxml"));
@@ -103,7 +106,7 @@ public class GuiMenu{
             String name = productName.getText();
             int price = Integer.parseInt(productPrice.getText());
             int quantity = Integer.parseInt(productQuantity.getText());
-            OrderService.getInstance().addProduct(name, price, quantity);
+            OrderService.getInstance().addProduct(orderID, name, price, quantity);
             updateList();
             productName.clear();
             productPrice.clear();
@@ -120,7 +123,7 @@ public class GuiMenu{
             String type = serviceType.getText();
             int personNumber = Integer.parseInt(numberOfPersons.getText());
             int hoursInt = Integer.parseInt(hours.getText());
-            OrderService.getInstance().addService(type, personNumber, hoursInt);
+            OrderService.getInstance().addService(orderID, type, personNumber, hoursInt);
             updateList();
             serviceType.clear();
             numberOfPersons.clear();
@@ -177,8 +180,6 @@ public class GuiMenu{
         BorderPane.setMargin(newOrderButton, new Insets(10, 10, 10, 10));
         newOrderButton.setOnAction(event -> makeNewOrder());
 
-
-
         TableColumn<Item, String> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
 
@@ -193,7 +194,7 @@ public class GuiMenu{
     @FXML
     private void buyItems() throws IOException {
 
-        OrderService.getInstance().finishOrder();
+        OrderService.getInstance().finishOrder(orderID);
         List<Item> items = OrderService.getInstance().getItems();
         String checkOut = OrderService.getInstance().getCheckoutDateTime();
         String sumString = OrderService.getInstance().getSumString();
@@ -204,26 +205,16 @@ public class GuiMenu{
         sumLabel.setText("Sum: " + sumString);
         dateLabel.setText("Checkout at " + checkOut);
 
-
-
         popupWindow.setScene(scenePopUp);
-
         popupWindow.setOnCloseRequest(event -> makeNewOrder());
-
         popupWindow.showAndWait();
-
-       /* basketList.getItems().clear();
-        sceneController.startGuiOrderSummary();*/
     }
 
     private void makeNewOrder() {
         basketList.getItems().clear();
         basketListSummary.getItems().clear();
-        OrderService.getInstance().newOrder();
+        orderID = OrderService.getInstance().newOrder();
         popupWindow.close();
     }
-
-
-
 
 }

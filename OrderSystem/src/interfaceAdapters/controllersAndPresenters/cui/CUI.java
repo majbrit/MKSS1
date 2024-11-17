@@ -8,9 +8,11 @@ import application.OrderService;
 import domain.factory.SimpleItemFactory;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CUI {
     private final OrderService orderService;
+    public UUID orderID;
 
     public CUI() {
 
@@ -25,7 +27,7 @@ public class CUI {
         int input;
         boolean newOrder;
         do {
-            orderService.newOrder();
+            orderID = orderService.newOrder();
             do {
                 printMenu();
                 input = Input.readInt();
@@ -78,7 +80,7 @@ public class CUI {
         System.out.println("Quantity: ");
         int quantity = Input.readInt();
 
-        orderService.addProduct(name, price, quantity);
+        orderService.addProduct(orderID, name, price, quantity);
     }
 
     private void orderService() {
@@ -89,11 +91,11 @@ public class CUI {
         System.out.println("Hours: ");
         int hours = Input.readInt();
 
-        orderService.addService(name, persons, hours);
+        orderService.addService(orderID, name, persons, hours);
     }
 
     private void finishOrder() {
-        orderService.finishOrder();
+        orderService.finishOrder(orderID);
         printItems();
         printSum();
         printCheckoutDateTime();

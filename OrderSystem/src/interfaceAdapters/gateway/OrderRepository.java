@@ -1,39 +1,48 @@
 package interfaceAdapters.gateway;
 
-import domain.repositoryInterfaces.IorderRepository;
+import domain.repositoryInterfaces.IOrderRepository;
 import domain.order.Order;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class OrderRepository implements IorderRepository {
-    private final List<Order> orders;
+public class OrderRepository implements IOrderRepository {
+    // persistence oriented repository
+    private Map<UUID, Order> orders = new HashMap<>();
 
-    public OrderRepository() {
-        this.orders = new ArrayList<>();
+    @Override
+    public UUID save(Order order) {
+        UUID orderId = UUID.randomUUID();
+        orders.put(orderId, order);
+        return orderId;
     }
 
     @Override
-    public void createOrder(Order order) {
-        orders.add(order);
-    }
-
-    @Override
-    public void updateOrder(Order order) {
-        int index = orders.indexOf(order);
-        if (index != -1) {
-
-            orders.set(index, order);
+    public boolean update(UUID orderId, Order order) {
+        if (orders.containsKey(orderId)) {
+            orders.put(orderId, order);
+            return true;
         }
+        return false;
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return new ArrayList<>(orders);
+    public Order findById(UUID orderId) {
+        return Optional.ofNullable(orders.get(orderId)).orElse(null);
     }
 
     @Override
-    public void deleteAllOrders() {
+    public boolean delete(UUID orderId) {
+        return orders.remove(orderId) != null;
+    }
+
+    @Override
+    public void deleteAll() {
         orders.clear();
     }
+
+    @Override
+    public List<Order> findAll() {
+        return new ArrayList<>(orders.values());
+    }
+
 }

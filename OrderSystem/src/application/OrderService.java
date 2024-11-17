@@ -1,16 +1,17 @@
 package application;
 
-import domain.repositoryInterfaces.IorderRepository;
+import domain.repositoryInterfaces.IOrderRepository;
 import domain.item.Item;
 import domain.factory.ItemFactory;
 import domain.order.Order;
 
 import java.util.List;
+import java.util.UUID;
 
 public class OrderService {
     private Order order;
     private ItemFactory itemFactory;
-    private IorderRepository orderRepository;
+    private IOrderRepository orderRepository;
 
     private static final class InstanceHolder {
         static final OrderService INSTANCE = new OrderService();
@@ -25,24 +26,24 @@ public class OrderService {
     public void setItemFactory(ItemFactory itemFactory){
         this.itemFactory = itemFactory;
     }
-    public void setOrderRepository(IorderRepository orderRepository) {
+    public void setOrderRepository(IOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
-    public void newOrder() {
+    public UUID newOrder() {
         this.order = new Order();
-        orderRepository.createOrder(order);
+        return orderRepository.save(order);
     }
 
-    public void addProduct(String name, int price, int quantity) {
+    public void addProduct(UUID id, String name, int price, int quantity) {
         order.addProduct(itemFactory.createProduct(name, price, quantity));
-        updateOrder();
+        updateOrder(id, order);
 
     }
 
-    public void addService(String name, int persons, int hours) {
+    public void addService(UUID id, String name, int persons, int hours) {
         order.addService(itemFactory.createService(name, persons, hours));
-        updateOrder();
+        updateOrder(id, order);
     }
 
     public List<Item> getItems() {
@@ -55,21 +56,21 @@ public class OrderService {
         return order.checkoutDateTime();
     }
 
-    public void finishOrder() {
+    public void finishOrder(UUID id) {
         order.setCheckoutDateTime();
-        updateOrder();
+        updateOrder(id, order);
     }
 
     public List<Order> getAllOrders() {
-        return orderRepository.getAllOrders();
+        return orderRepository.findAll();
     }
 
     public void clearAllOrders() {
-        orderRepository.deleteAllOrders();
+        orderRepository.deleteAll();
     }
 
-    private void updateOrder() {
-        orderRepository.updateOrder(order);
+    private void updateOrder(UUID id, Order order) {
+        orderRepository.update(id, order);
     }
 
     public int getSum(){
