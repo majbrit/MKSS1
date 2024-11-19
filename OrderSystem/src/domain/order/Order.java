@@ -1,5 +1,6 @@
 package domain.order;
 
+import common.PriceFormatter;
 import domain.item.Item;
 
 import java.util.ArrayList;
@@ -56,10 +57,6 @@ public class Order {
 
     public String getSumString() {
         int sum = getSum();
-        return formatPrice(sum);
-    }
-
-    private String formatPrice(int priceInCent) {
-        return String.format("%.2f EUR", priceInCent / 100.0);
+        return PriceFormatter.formatPrice(sum);
     }
 }
