@@ -16,3 +16,9 @@ If errors occur with JavaFX and you use macOS try this:
 - extract Jar files in File --> Project Structure --> Modules
 - tutorial: https://www.youtube.com/watch?v=b60Fl2WLaQY
 - set path: *--module-path "/Library/Java/JavaVirtualMachines/javafx-sdk-23.0.1/lib" --add-modules javafx.controls,javafx.fxml*
+
+# Argumentation for persistence-oriented repository
+- The persistence-oriented approach has the advantage that the code is easier to extend. This makes it easier to switch to a persistent storage solution, such as a database
+- The collection-oriented approach is closely linked to the specific storage structure. This restricts flexibility. The persistence-oriented approach has the advantage that it completely abstracts data persistence, which means that the application does not have to worry about the details of data storage.
+- The persistence-oriented approach is more flexible, as this form of interface supports both an in-memory and a database-based implementation.
+- 
