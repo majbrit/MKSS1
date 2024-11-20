@@ -16,7 +16,15 @@ public class ClearOrdersUseCase implements IClearOrdersInput {
         this.orderRepository = orderRepository;
     }
 
-    public void clearOrders() {
 
+    @Override
+    public void clearOrders() {
+        try {
+            orderRepository.deleteAll();
+            clearOrdersOutput.onClearOrdersResult(true);
+        } catch (Exception e) {
+            clearOrdersOutput.onClearOrdersResult(false);
+        }
     }
+
 }

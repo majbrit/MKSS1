@@ -6,6 +6,7 @@ import domain.factory.ItemFactory;
 import domain.item.Item;
 import domain.item.Product;
 import domain.item.Service;
+import domain.order.Order;
 import domain.repositoryInterfaces.IOrderRepository;
 import interfaceAdapters.gateway.OrderRepository;
 import application.OrderService;
@@ -301,5 +302,25 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
             System.out.println("Order could not be created");
         }
         this.orderID = orderId;
+    }
+
+    @Override
+    public void onClearOrdersResult(boolean success) {
+
+    }
+
+    @Override
+    public void onFinishOrderResult(boolean success) {
+
+    }
+
+    @Override
+    public void onGetAllOrdersResult(List<Order> orders) {
+
+    }
+
+    @Override
+    public void onGetOrderSummaryResult(String orderSummary) {
+
     }
 }

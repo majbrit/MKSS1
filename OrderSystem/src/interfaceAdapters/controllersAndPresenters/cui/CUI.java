@@ -16,10 +16,10 @@ import domain.factory.SimpleItemFactory;
 import java.util.List;
 import java.util.UUID;
 
-public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput {
+public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput, IGetAllItemsOutput,IGetCheckoutDateTimeOutput {
 
     //TODO handle everything over use case, so this can be deleted:
-    private final OrderService orderService;
+   // private final OrderService orderService;
 
 
     public UUID orderID;
@@ -33,8 +33,8 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
     private IGetOrderSummaryInput getOrderSummaryInput;
-
-
+    private IGetAllItemsinput getAllItemsInput;
+    private IGetCheckoutDateTimeInput getCheckoutDateTimeInput;
 
     public CUI(IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
@@ -44,12 +44,12 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
         this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
         this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
+        this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
+        this.getCheckoutDateTimeInput = new GetCheckoutDateTimeUseCase(this, orderRepository);
 
-
-
-        this.orderService = OrderService.getInstance();
-        this.orderService.setOrderRepository(new OrderRepository());
-        this.orderService.setItemFactory(new SimpleItemFactory());
+        //   this.orderService = OrderService.getInstance();
+        //this.orderService.setOrderRepository(new OrderRepository());
+        //this.orderService.setItemFactory(new SimpleItemFactory());
     }
 
 
@@ -59,7 +59,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         do {
 
             //TODO handle everything over use case, so this can be deleted:
-            orderID = orderService.newOrder();
+            //  orderID = orderService.newOrder();
 
 
             createOrderInput.createOrder();
@@ -119,7 +119,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         int quantity = Input.readInt();
 
         //TODO handle everything over use case, so this can be deleted:
-        orderService.addProduct(orderID, name, price, quantity);
+        // orderService.addProduct(orderID, name, price, quantity);
 
         addProductInput.addProduct(orderID, name, price, quantity);
     }
@@ -133,72 +133,108 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         int hours = Input.readInt();
 
         //TODO handle everything over use case, so this can be deleted:
-        orderService.addService(orderID, name, persons, hours);
+        // orderService.addService(orderID, name, persons, hours);
 
         addServiceInput.addService(orderID, name, persons, hours);
     }
 
+
+
+
+
+
+    private void printCheckoutDateTime() {
+        getCheckoutDateTimeInput.getCheckoutDateTime(orderID);
+    }
+    @Override
+    public void onGetCheckoutDateTimeResult(String checkoutDateTime) {
+        System.out.println("Checkout Date and Time: " + checkoutDateTime);
+    }
+
+
+    private void printItems() {
+
+        getAllItemsInput.getAllItems(orderID);
+
+
+    }
+    @Override
+    public void onGetAllItemsResult(List<Item> items) {
+        if (items.isEmpty()) {
+            System.out.println("No items available.");
+        } else {
+            for (Item item : items) {
+                System.out.println(item); // Or format the item data as needed
+            }
+        }
+    }
+
+
+    private void viewAllOrders() {
+        //TODO handle everything over use case, so this can be deleted:
+        //List<Order> allOrders = orderService.getAllOrders();
+        getAllOrdersInput.getAllOrders();
+    }
+
+
+    @Override
+    public void onGetAllOrdersResult(List<Order> orders) {
+        if (orders.isEmpty()) {
+            System.out.println("No orders available.");
+        } else {
+            for (Order order : orders) {
+                // Print the order details
+                String orderDate = order.getCheckoutDateTime() != null ? String.valueOf(order.getCheckoutDateTime()) : "Not yet checked out";
+                System.out.println("Order placed at: " + orderDate);
+
+                for (Item item : order.getItems()) {
+                    System.out.println(item.toString());  // Print each item in the order
+                }
+
+                // Print the total sum of the order
+                System.out.println("Total: " + order.getSumString());
+                System.out.println("------------------------------------------------");
+            }
+        }
+    }
+
+
+
+    private void deleteAllOrders() {
+        //TODO handle everything over use case, so this can be deleted:
+        // orderService.clearAllOrders();
+
+        clearOrdersInput.clearOrders();
+
+
+        System.out.println("All orders have been deleted.");
+    }
+    @Override
+    public void onClearOrdersResult(boolean success) {
+        if (success) {
+            System.out.println("All orders have been cleared successfully.");
+        } else {
+            System.out.println("Failed to clear orders.");
+        }
+    }
+
+
     private void finishOrder() {
         //TODO handle everything over use case, so this can be deleted:
-        orderService.finishOrder(orderID);
-
+        // orderService.finishOrder(orderID);
+        finishOrderInput.finishOrder(orderID);
 
         printItems();
         printSum();
         printCheckoutDateTime();
     }
-
-    private void printSum() {
-        //TODO handle everything over use case, so this can be deleted: orderService.getSumString()
-        System.out.println(orderService.getSumString());
-    }
-
-    private void printCheckoutDateTime() {
-        //TODO handle everything over use case, so this can be deleted:
-        String date = orderService.getCheckoutDateTime();
-
-
-        System.out.println("Checkout at " + date);
-    }
-
-    private void printItems() {
-        //TODO handle everything over use case, so this can be deleted:
-        List<Item> items = orderService.getItems();
-
-
-        for (Item item : items) {
-            System.out.println(item);
+    @Override
+    public void onFinishOrderResult(boolean success) {
+        if (success) {
+            System.out.println("Order finished successfully.");
+        } else {
+            System.out.println("Failed to finish order.");
         }
-    }
-    private void viewAllOrders() {
-        //TODO handle everything over use case, so this can be deleted:
-        List<Order> allOrders = orderService.getAllOrders();
-
-
-        if (allOrders.isEmpty()) {
-            System.out.println("No orders available.");
-            return;
-        }
-
-        for (Order order : allOrders) {
-
-            String orderDate = order.getCheckoutDateTime() != null ? String.valueOf(order.getCheckoutDateTime()) : "Not yet checked out";
-            System.out.println("Order placed at: " + orderDate);
-
-            for (Item item : order.getItems()) {
-                System.out.println(item.toString());
-            }
-            System.out.println("Total: " + order.getSumString());
-            System.out.println("------------------------------------------------");
-        }
-    }
-
-    private void deleteAllOrders() {
-        //TODO handle everything over use case, so this can be deleted:
-        orderService.clearAllOrders();
-
-
-        System.out.println("All orders have been deleted.");
     }
 
 
@@ -226,5 +262,16 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
             System.out.println("Service could not be added.");
         }
 
+    }
+
+
+    private void printSum() {
+        //TODO handle everything over use case, so this can be deleted: orderService.getSumString()
+        //System.out.println(orderService.getSumString());
+        getOrderSummaryInput.getOrderSummary(orderID);
+    }
+    @Override
+    public void onGetOrderSummaryResult(String orderSummary) {
+        System.out.println("Order Summary: " + orderSummary);
     }
 }
