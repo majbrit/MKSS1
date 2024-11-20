@@ -4,13 +4,7 @@ import application.boundaries.*;
 import application.usecases.*;
 import domain.factory.ItemFactory;
 import domain.item.Item;
-import domain.item.Product;
-import domain.item.Service;
-import domain.order.Order;
 import domain.repositoryInterfaces.IOrderRepository;
-import interfaceAdapters.gateway.OrderRepository;
-import application.OrderService;
-import domain.factory.SimpleItemFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -31,7 +25,6 @@ import java.util.UUID;
 
 public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetOrderSummaryOutput, IGetAllItemsOutput {
     private Scene scene;
-    //private List<Item> items;
 
     // product
     @FXML
@@ -53,11 +46,9 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @FXML
     private Label serviceError;
 
-
     // shopping list
     @FXML
     private TableView<Item> basketList;
-
 
     private Stage stage;
     private FXMLLoader menuFxmlLoader;
@@ -76,14 +67,8 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     private ICreateOrderInput createOrderInput;
     private IAddProductInput addProductinput;
     private IAddServiceInput addServiceInput;
-    private IClearOrdersInput clearOrdersInput;
-    private IFinishOrderInput finishOrderInput;
-    private IGetAllOrdersInput getAllOrdersInput;
     private IGetOrderSummaryInput getOrderSummaryInput;
     private IGetAllItemsInput getAllItemsInput;
-
-
-
 
     public GuiMenu(Stage stage, IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
@@ -92,14 +77,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
 
-
-
-        //TODO handle everything over use case, so this can be deleted:
-        //orderID = OrderService.getInstance().newOrder();
-
         createOrderInput.createOrder();
-
-
 
         this.stage = stage;
         menuFxmlLoader = new FXMLLoader(getClass().getResource("GuiMenu.fxml"));
@@ -109,13 +87,10 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         init();
-
         stage.setScene(menuScene);
         stage.setMaximized(true);
         stage.setTitle("Order System");
-
         stage.show();
     }
 
@@ -137,13 +112,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
             String name = productName.getText();
             int price = Integer.parseInt(productPrice.getText());
             int quantity = Integer.parseInt(productQuantity.getText());
-            //TODO handle everything over use case, so this can be deleted:
-            //OrderService.getInstance().addProduct(orderID, name, price, quantity);
-            //updateList();
-
-
             addProductinput.addProduct(orderID, name, price, quantity);
-
 
             productName.clear();
             productPrice.clear();
@@ -160,15 +129,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
             String type = serviceType.getText();
             int personNumber = Integer.parseInt(numberOfPersons.getText());
             int hoursInt = Integer.parseInt(hours.getText());
-
-            //TODO handle everything over use case, so this can be deleted:
-            //OrderService.getInstance().addService(orderID, type, personNumber, hoursInt);
-            //updateList();
-
             addServiceInput.addService(orderID, type, personNumber, hoursInt);
-
-
-
             serviceType.clear();
             numberOfPersons.clear();
             hours.clear();
@@ -179,12 +140,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     }
 
     private void updateList() {
-        //TODO handle everything over use case, so this can be deleted:
-        //items = OrderService.getInstance().getItems();
-
         getAllItemsInput.getAllItems(orderID);
-
-
     }
 
     private void createPopupWindow() {
@@ -235,21 +191,11 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         basketListSummary.getColumns().add(descriptionColumn);
 
         scenePopUp= new Scene(borderPane);
-
     }
 
     @FXML
     private void buyItems() {
-        //TODO handle everything over use case, so this can be deleted:
-        //OrderService.getInstance().finishOrder(orderID);
-        //List<Item> items = OrderService.getInstance().getItems();
-        //String checkOut = OrderService.getInstance().getCheckoutDateTime();
-        //String sumString = OrderService.getInstance().getSumString();
-
-
         getOrderSummaryInput.getOrderSummary(orderID);
-
-
     }
 
     private void showSummary(List<Item> items, String sumString, String checkOut) {
@@ -267,9 +213,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     private void makeNewOrder() {
         basketList.getItems().clear();
         basketListSummary.getItems().clear();
-
-        //TODO handle everything over use case, so this can be deleted:
-        //orderID = OrderService.getInstance().newOrder();
 
         createOrderInput.createOrder();
 
@@ -304,7 +247,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         }
         this.orderID = orderId;
     }
-
 
     @Override
     public void onGetOrderSummaryResult(List<Item> items, String sumString, String checkOut) {

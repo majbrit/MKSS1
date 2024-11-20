@@ -4,23 +4,14 @@ import application.boundaries.*;
 import application.usecases.*;
 import common.Input;
 import domain.factory.ItemFactory;
-import domain.item.Product;
-import domain.item.Service;
 import domain.order.Order;
 import domain.item.Item;
 import domain.repositoryInterfaces.IOrderRepository;
-import interfaceAdapters.gateway.OrderRepository;
-import application.OrderService;
-import domain.factory.SimpleItemFactory;
 
 import java.util.List;
 import java.util.UUID;
 
 public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput, IGetAllItemsOutput, IGetCheckoutDateTimeOutput {
-
-    //TODO handle everything over use case, so this can be deleted:
-   // private final OrderService orderService;
-
 
     public UUID orderID;
     private boolean newOrder;
@@ -45,23 +36,12 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
         this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
-      //  this.getCheckoutDateTimeInput = new GetCheckoutDateTimeUseCase(this, orderRepository);
-
-        //   this.orderService = OrderService.getInstance();
-        //this.orderService.setOrderRepository(new OrderRepository());
-        //this.orderService.setItemFactory(new SimpleItemFactory());
+        this.getCheckoutDateTimeInput = new GetCheckoutDateTimeUseCase(this, orderRepository);
     }
-
-
 
     public void menuLoop() {
 
         do {
-
-            //TODO handle everything over use case, so this can be deleted:
-            //  orderID = orderService.newOrder();
-
-
             createOrderInput.createOrder();
         } while (newOrder);
 
@@ -118,9 +98,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         System.out.println("Quantity: ");
         int quantity = Input.readInt();
 
-        //TODO handle everything over use case, so this can be deleted:
-        // orderService.addProduct(orderID, name, price, quantity);
-
         addProductInput.addProduct(orderID, name, price, quantity);
     }
 
@@ -132,16 +109,8 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         System.out.println("Hours: ");
         int hours = Input.readInt();
 
-        //TODO handle everything over use case, so this can be deleted:
-        // orderService.addService(orderID, name, persons, hours);
-
         addServiceInput.addService(orderID, name, persons, hours);
     }
-
-
-
-
-
 
     private void printCheckoutDateTime() {
         //getCheckoutDateTimeInput.getCheckoutDateTime(orderID);
@@ -151,12 +120,8 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         System.out.println("Checkout Date and Time: " + checkoutDateTime);
     }
 
-
     private void printItems() {
-
         getAllItemsInput.getAllItems(orderID);
-
-
     }
     @Override
     public void onGetAllItemsResult(List<Item> items) {
@@ -169,13 +134,9 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         }
     }
 
-
     private void viewAllOrders() {
-        //TODO handle everything over use case, so this can be deleted:
-        //List<Order> allOrders = orderService.getAllOrders();
         getAllOrdersInput.getAllOrders();
     }
-
 
     @Override
     public void onGetAllOrdersResult(List<Order> orders) {
@@ -198,14 +159,8 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         }
     }
 
-
-
     private void deleteAllOrders() {
-        //TODO handle everything over use case, so this can be deleted:
-        // orderService.clearAllOrders();
-
         clearOrdersInput.clearOrders();
-
 
         System.out.println("All orders have been deleted.");
     }
@@ -218,10 +173,8 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         }
     }
 
-
     private void finishOrder() {
-        //TODO handle everything over use case, so this can be deleted:
-        // orderService.finishOrder(orderID);
+
         finishOrderInput.finishOrder(orderID);
 
         printItems();
@@ -236,7 +189,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
             System.out.println("Failed to finish order.");
         }
     }
-
 
 
     @Override
@@ -264,15 +216,12 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
 
     }
 
-
     private void printSum() {
-        //TODO handle everything over use case, so this can be deleted: orderService.getSumString()
-        //System.out.println(orderService.getSumString());
         getOrderSummaryInput.getOrderSummary(orderID);
     }
     @Override
     public void onGetOrderSummaryResult(List<Item> items, String sumString, String checkOut) {
         System.out.println("sum: " + sumString);
+        System.out.println("checkout: " + checkOut);
     }
-
 }
