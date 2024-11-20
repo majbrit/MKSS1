@@ -15,18 +15,20 @@ public class FinishOrderUseCase implements IFinishOrderInput {
         this.finishOrderOutput = finishOrderOutput;
         this.orderRepository = orderRepository;
     }
+
     @Override
-    public void finishOrder(UUID id) {
-        Order order = orderRepository.findById(id);
+    public void finishOrder(UUID orderId) {
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            // Set the checkout date/time
+            order.setCheckoutDateTime();
+            // Optionally, update the order in the repository
+            orderRepository.update(orderId, order);
 
-        if (order == null) {
-            finishOrderOutput.onFinishOrderResult(false);
-            return;
+            // Notify the output boundary with the finished order
+            finishOrderOutput.onFinishOrderResult(true, order);
+        } else {
+            finishOrderOutput.onFinishOrderResult(false, null); // If the order is not found
         }
-
-        order.setCheckoutDateTime();
-        boolean updated = orderRepository.update(id, order);
-
-        finishOrderOutput.onFinishOrderResult(updated);
     }
 }

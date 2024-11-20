@@ -224,16 +224,24 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         // orderService.finishOrder(orderID);
         finishOrderInput.finishOrder(orderID);
 
-        printItems();
-        printSum();
-        printCheckoutDateTime();
+
     }
+
     @Override
-    public void onFinishOrderResult(boolean success) {
-        if (success) {
+    public void onFinishOrderResult(boolean success, Order finishedOrder) {
+        if (success && finishedOrder != null) {
             System.out.println("Order finished successfully.");
+            System.out.println("Checkout Date: " + finishedOrder.getCheckoutDateTime());
+
+
+
+            for (Item item : finishedOrder.getItems()) {
+                System.out.println(item);
+            }
+
+            System.out.println("Total: " + finishedOrder.getSumString());
         } else {
-            System.out.println("Failed to finish order.");
+            System.out.println("Failed to finish the order.");
         }
     }
 
@@ -266,8 +274,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
 
 
     private void printSum() {
-        //TODO handle everything over use case, so this can be deleted: orderService.getSumString()
-        //System.out.println(orderService.getSumString());
         getOrderSummaryInput.getOrderSummary(orderID);
     }
     @Override

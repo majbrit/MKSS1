@@ -313,10 +313,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
 
     }
 
-    @Override
-    public void onFinishOrderResult(boolean success) {
 
-    }
 
     @Override
     public void onGetAllOrdersResult(List<Order> orders) {
@@ -332,5 +329,10 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     public void onGetAllItemsResult(List<Item> items) {
         ArrayList<Item> arrayItems = new ArrayList<>(items);
         basketList.setItems(FXCollections.<Item>observableArrayList(arrayItems));
+    }
+
+    @Override
+    public void onFinishOrderResult(boolean success, Order finishedOrder) {
+
     }
 }
