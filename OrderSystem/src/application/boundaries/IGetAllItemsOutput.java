@@ -5,5 +5,5 @@ import domain.item.Item;
 import java.util.List;
 
 public interface IGetAllItemsOutput {
-    void onGetAllItemsResult(List<Item> items);
+    public void onGetAllItemsResult(List<Item> items);
 }

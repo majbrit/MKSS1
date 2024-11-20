@@ -1,7 +1,8 @@
 package application.usecases;
 
+import application.boundaries.IGetAllItemsInput;
 import application.boundaries.IGetAllItemsOutput;
-import application.boundaries.IGetAllItemsinput;
+import application.boundaries.IGetAllItemsInput;
 import application.boundaries.IGetAllOrdersInput;
 import domain.order.Order;
 import domain.repositoryInterfaces.IOrderRepository;
@@ -9,7 +10,7 @@ import domain.repositoryInterfaces.IOrderRepository;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class GetAllItemsUseCase implements IGetAllItemsinput {
+public class GetAllItemsUseCase implements IGetAllItemsInput {
     private final IOrderRepository orderRepository;
     private final IGetAllItemsOutput getAllItemsOutput;
 
