@@ -11,7 +11,7 @@ import domain.repositoryInterfaces.IOrderRepository;
 import java.util.List;
 import java.util.UUID;
 
-public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput, IGetAllItemsOutput, IGetCheckoutDateTimeOutput {
+public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetAllItemsOutput {
 
     public UUID orderID;
     private boolean newOrder;
@@ -23,9 +23,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
     private IClearOrdersInput clearOrdersInput;
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
-    private IGetOrderSummaryInput getOrderSummaryInput;
     private IGetAllItemsInput getAllItemsInput;
-    private IGetCheckoutDateTimeInput getCheckoutDateTimeInput;
 
     public CUI(IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
@@ -34,9 +32,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         this.clearOrdersInput = new ClearOrdersUseCase(this, orderRepository);
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
         this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
-        this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
-        this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
-        this.getCheckoutDateTimeInput = new GetCheckoutDateTimeUseCase(this, orderRepository);
+         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
     }
 
     public void menuLoop() {
@@ -112,13 +108,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         addServiceInput.addService(orderID, name, persons, hours);
     }
 
-    private void printCheckoutDateTime() {
-        //getCheckoutDateTimeInput.getCheckoutDateTime(orderID);
-    }
-    @Override
-    public void onGetCheckoutDateTimeResult(String checkoutDateTime) {
-        System.out.println("Checkout Date and Time: " + checkoutDateTime);
-    }
 
     private void printItems() {
         getAllItemsInput.getAllItems(orderID);
@@ -224,12 +213,5 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
 
     }
 
-    private void printSum() {
-        getOrderSummaryInput.getOrderSummary(orderID);
-    }
-    @Override
-    public void onGetOrderSummaryResult(List<Item> items, String sumString, String checkOut) {
-        System.out.println("sum: " + sumString);
-        System.out.println("checkout: " + checkOut);
-    }
+
 }

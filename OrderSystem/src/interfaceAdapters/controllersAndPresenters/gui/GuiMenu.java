@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetOrderSummaryOutput, IGetAllItemsOutput, IFinishOrderOutput {
+public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetAllItemsOutput, IFinishOrderOutput {
     private Scene scene;
 
     // product
@@ -68,16 +68,13 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     private ICreateOrderInput createOrderInput;
     private IAddProductInput addProductinput;
     private IAddServiceInput addServiceInput;
-    private IGetOrderSummaryInput getOrderSummaryInput;
     private IGetAllItemsInput getAllItemsInput;
-
     private IFinishOrderInput finishOrderInput;
 
     public GuiMenu(Stage stage, IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
         this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
-        this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
 
@@ -200,7 +197,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @FXML
     private void buyItems() {
         finishOrderInput.finishOrder(orderID);
-        getOrderSummaryInput.getOrderSummary(orderID);
     }
 
     private void showSummary(List<Item> items, String sumString, String checkOut) {
@@ -251,10 +247,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         this.orderID = orderId;
     }
 
-    @Override
-    public void onGetOrderSummaryResult(List<Item> items, String sumString, String checkOut) {
-        showSummary(items, sumString, checkOut);
-    }
 
     @Override
     public void onGetAllItemsResult(List<Item> items) {
@@ -265,16 +257,8 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @Override
     public void onFinishOrderResult(boolean success, Order finishedOrder) {
         if (success && finishedOrder != null) {
-            System.out.println("Order finished successfully.");
-            System.out.println("Checkout Date: " + finishedOrder.getCheckoutDateTime());
 
-
-
-            for (Item item : finishedOrder.getItems()) {
-                System.out.println(item);
-            }
-
-            System.out.println("Total: " + finishedOrder.getSumString());
+            showSummary(finishedOrder.getItems(), finishedOrder.getSumString(), finishedOrder.checkoutDateTime());
         } else {
             System.out.println("Failed to finish the order.");
         }

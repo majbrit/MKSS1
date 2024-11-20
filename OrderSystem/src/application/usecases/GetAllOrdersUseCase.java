@@ -2,7 +2,6 @@ package application.usecases;
 
 import application.boundaries.IGetAllOrdersInput;
 import application.boundaries.IGetAllOrdersOutput;
-import application.boundaries.IGetOrderSummaryOutput;
 import domain.order.Order;
 import domain.repositoryInterfaces.IOrderRepository;
 
