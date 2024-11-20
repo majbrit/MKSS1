@@ -97,9 +97,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
 
 
 
-        OrderService.getInstance().setOrderRepository(new OrderRepository());
-        OrderService.getInstance().setItemFactory(new SimpleItemFactory());
-
         //TODO handle everything over use case, so this can be deleted:
         //orderID = OrderService.getInstance().newOrder();
 
