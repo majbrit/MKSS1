@@ -22,7 +22,7 @@ public class GetOrderSummaryUseCase implements IGetOrderSummaryInput {
     @Override
     public void getOrderSummary(UUID orderId) {
         Order order = orderRepository.findById(orderId);
-        order.setCheckoutDateTime();
+        //order.setCheckoutDateTime();
 
         if (order == null) {
             getOrderSummaryOutput.onGetOrderSummaryResult(new ArrayList<>(),"Order not found.","");

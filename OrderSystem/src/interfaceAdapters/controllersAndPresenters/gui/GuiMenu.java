@@ -4,6 +4,7 @@ import application.boundaries.*;
 import application.usecases.*;
 import domain.factory.ItemFactory;
 import domain.item.Item;
+import domain.order.Order;
 import domain.repositoryInterfaces.IOrderRepository;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetOrderSummaryOutput, IGetAllItemsOutput {
+public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetOrderSummaryOutput, IGetAllItemsOutput, IFinishOrderOutput {
     private Scene scene;
 
     // product
@@ -70,12 +71,15 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     private IGetOrderSummaryInput getOrderSummaryInput;
     private IGetAllItemsInput getAllItemsInput;
 
+    private IFinishOrderInput finishOrderInput;
+
     public GuiMenu(Stage stage, IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
         this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
         this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
+        this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
 
         createOrderInput.createOrder();
 
@@ -195,6 +199,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
 
     @FXML
     private void buyItems() {
+        finishOrderInput.finishOrder(orderID);
         getOrderSummaryInput.getOrderSummary(orderID);
     }
 
@@ -255,5 +260,23 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     public void onGetAllItemsResult(List<Item> items) {
         ArrayList<Item> arrayItems = new ArrayList<>(items);
         basketList.setItems(FXCollections.<Item>observableArrayList(arrayItems));
+    }
+
+    @Override
+    public void onFinishOrderResult(boolean success, Order finishedOrder) {
+        if (success && finishedOrder != null) {
+            System.out.println("Order finished successfully.");
+            System.out.println("Checkout Date: " + finishedOrder.getCheckoutDateTime());
+
+
+
+            for (Item item : finishedOrder.getItems()) {
+                System.out.println(item);
+            }
+
+            System.out.println("Total: " + finishedOrder.getSumString());
+        } else {
+            System.out.println("Failed to finish the order.");
+        }
     }
 }
