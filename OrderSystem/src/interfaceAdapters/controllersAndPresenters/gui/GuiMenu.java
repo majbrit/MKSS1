@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetOrderSummaryOutput, IGetAllItemsOutput {
+public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetOrderSummaryOutput, IGetAllItemsOutput {
     private Scene scene;
     //private List<Item> items;
 
@@ -89,9 +89,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
         this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
-        this.clearOrdersInput = new ClearOrdersUseCase(this, orderRepository);
-        this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
-        this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
         this.getOrderSummaryInput = new GetOrderSummaryUseCase(this, orderRepository);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
 
@@ -308,20 +305,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         this.orderID = orderId;
     }
 
-    @Override
-    public void onClearOrdersResult(boolean success) {
-
-    }
-
-    @Override
-    public void onFinishOrderResult(boolean success) {
-
-    }
-
-    @Override
-    public void onGetAllOrdersResult(List<Order> orders) {
-
-    }
 
     @Override
     public void onGetOrderSummaryResult(List<Item> items, String sumString, String checkOut) {
