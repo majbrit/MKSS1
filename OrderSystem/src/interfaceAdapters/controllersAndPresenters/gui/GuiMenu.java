@@ -222,8 +222,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @Override
     public void onAddProductResult(boolean updated) {
         if (!updated) {
-            //TODO show text in gui
-            System.out.println("Product could not be added");
+            productError.setText("Product could not be added");
         } else {
             updateList();
         }
@@ -232,8 +231,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @Override
     public void onAddServiceResult(boolean updated) {
         if(!updated) {
-            //TODO show text in gui
-            System.out.println("Service could not be added");
+            serviceError.setText("Service could not be added");
         } else {
             updateList();
         }
