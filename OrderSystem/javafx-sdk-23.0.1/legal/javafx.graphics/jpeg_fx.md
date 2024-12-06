@@ -38,6 +38,6 @@ software".
 
 We specifically permit and encourage the use of this software as the basis of
 commercial products, provided that all warranty or liability claims are
-assumed by the product vendor.
+assumed by the lineItem vendor.
 
 ```

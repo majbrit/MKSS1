@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IGetAllItemsOutput, IFinishOrderOutput {
+public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllItemsOutput, IFinishOrderOutput {
     private Scene scene;
 
     // product
@@ -37,15 +37,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     @FXML
     private Label productError;
 
-    // service
-    @FXML
-    private TextField serviceType;
-    @FXML
-    private TextField numberOfPersons;
-    @FXML
-    private TextField hours;
-    @FXML
-    private Label serviceError;
 
     // shopping list
     @FXML
@@ -67,14 +58,12 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     // use case input boundaries
     private ICreateOrderInput createOrderInput;
     private IAddProductInput addProductinput;
-    private IAddServiceInput addServiceInput;
     private IGetAllItemsInput getAllItemsInput;
     private IFinishOrderInput finishOrderInput;
 
     public GuiMenu(Stage stage, IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
-        this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
         this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
 
@@ -121,23 +110,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
         } catch (NumberFormatException e) {
             productError.setText("Invalid price or quantity");
         }
-    }
-
-    @FXML
-    private void addService() {
-        try {
-            serviceError.setText("");
-            String type = serviceType.getText();
-            int personNumber = Integer.parseInt(numberOfPersons.getText());
-            int hoursInt = Integer.parseInt(hours.getText());
-            addServiceInput.addService(orderID, type, personNumber, hoursInt);
-            serviceType.clear();
-            numberOfPersons.clear();
-            hours.clear();
-        } catch (NumberFormatException e) {
-            serviceError.setText("Invalid number of persons or hours");
-        }
-
     }
 
     private void updateList() {
@@ -224,15 +196,6 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IAddServi
     public void onAddProductResult(boolean updated) {
         if (!updated) {
             productError.setText("Product could not be added");
-        } else {
-            updateList();
-        }
-    }
-
-    @Override
-    public void onAddServiceResult(boolean updated) {
-        if(!updated) {
-            serviceError.setText("Service could not be added");
         } else {
             updateList();
         }

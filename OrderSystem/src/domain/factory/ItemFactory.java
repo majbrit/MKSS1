@@ -1,10 +1,7 @@
 package domain.factory;
 
-import domain.item.Product;
-import domain.item.Service;
+import domain.item.LineItem;
 
 public interface ItemFactory {
-    Product createProduct(String name, int unitPrice, int quantity);
-
-    Service createService(String name, int persons, int hours);
+    LineItem createProduct(String name, int unitPrice, int quantity);
 }

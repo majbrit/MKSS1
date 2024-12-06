@@ -1,30 +1,20 @@
 package domain.item;
 
-public class LineItem {
-    private String name;
-    private int unitPrice;
+public class LineItem extends Item {
     private int quantity;
 
     public LineItem(String name, int unitPrice, int quantity) {
-        this.name = name;
-        this.unitPrice = unitPrice;
+        super(name, unitPrice);
         this.quantity = quantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getUnitPrice() {
-        return unitPrice;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
+    @Override
     public int getTotalPrice() {
-        return unitPrice * quantity;
+        return unitPrice * getQuantity();
     }
 
     @Override
@@ -32,7 +22,5 @@ public class LineItem {
         return getQuantity() + " * " + getName() + " = " + formatPrice(getTotalPrice());
     }
 
-    public String formatPrice(int priceInCent) {
-        return String.format("%.2f EUR", priceInCent / 100.0);
-    }
+
 }

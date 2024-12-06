@@ -1218,7 +1218,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
    with Licensor regarding such Contributions.
 
 6. Trademarks. This License does not grant permission to use the trade
-   names, trademarks, service marks, or product names of the Licensor,
+   names, trademarks, service marks, or lineItem names of the Licensor,
    except as required for reasonable and customary use in describing the
    origin of the Work and reproducing the content of the NOTICE file.
 
@@ -6684,7 +6684,7 @@ are met:
 
 2. The origin of this software must not be misrepresented; you must
    not claim that you wrote the original software.  If you use this
-   software in a product, an acknowledgment in the product
+   software in a lineItem, an acknowledgment in the lineItem
    documentation would be appreciated but is not required.
 
 3. Altered source versions must be plainly marked as such, and must

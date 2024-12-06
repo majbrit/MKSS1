@@ -284,7 +284,7 @@ Chinese/Japanese Word Break Dictionary Data (cjdict.txt)
  #  officers and other employees shall be held liable for any and all
  #  damages, including, without limitation, general, special, incidental
  #  and consequential damages, arising out of or otherwise in connection
- #  with the use or inability to use the program or any product, material
+ #  with the use or inability to use the program or any lineItem, material
  #  or result produced or otherwise obtained by using the program,
  #  regardless of whether they have been advised of, or otherwise had
  #  knowledge of, the possibility of such damages at any time during the

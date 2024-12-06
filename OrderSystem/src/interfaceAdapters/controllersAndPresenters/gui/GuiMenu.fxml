@@ -22,7 +22,7 @@
          <children>
             <VBox style="-fx-background-color: #eeeeee;">
                <children>
-                  <TextField fx:id="productName" promptText="product name" />
+                  <TextField fx:id="productName" promptText="lineItem name" />
                   <TextField fx:id="productPrice" promptText="price" />
                   <TextField fx:id="productQuantity" promptText="quantity" />
                   <Button mnemonicParsing="false" onAction="#addProduct" prefHeight="27.0" prefWidth="150.0" text="Add" />
@@ -35,21 +35,6 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </VBox>
-            <VBox style="-fx-background-color: #eeeeee;">
-               <children>
-                  <TextField fx:id="serviceType" promptText="service type" />
-                  <TextField fx:id="numberOfPersons" promptText="number of persons" />
-                  <TextField fx:id="hours" promptText="hours" />
-                  <Button mnemonicParsing="false" onAction="#addService" prefHeight="26.0" prefWidth="150.0" text="Add" />
-                  <Label fx:id="serviceError" prefHeight="107.0" prefWidth="150.0" textFill="RED" />
-               </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
          </children>
       </HBox>
    </left>
@@ -57,7 +42,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
          <children>
             <TableView fx:id="basketList" prefHeight="200.0" prefWidth="200.0" />
-            <Button mnemonicParsing="false" onAction="#buyItems" prefHeight="26.0" prefWidth="425.0" text="Buy" />
+            <Button mnemonicParsing="false" onAction="#buyItems" prefHeight="27.0" prefWidth="570.0" text="Buy" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

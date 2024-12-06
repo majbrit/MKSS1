@@ -11,7 +11,7 @@ import domain.repositoryInterfaces.IOrderRepository;
 import java.util.List;
 import java.util.UUID;
 
-public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetAllItemsOutput {
+public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetAllItemsOutput {
 
     public UUID orderID;
     private boolean newOrder;
@@ -19,7 +19,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
     // use case input boundaries
     private ICreateOrderInput createOrderInput;
     private IAddProductInput addProductInput;
-    private IAddServiceInput addServiceInput;
     private IClearOrdersInput clearOrdersInput;
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
@@ -28,7 +27,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
     public CUI(IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductInput = new AddProductUseCase(this, orderRepository, itemFactory);
-        this.addServiceInput = new AddServiceUseCase(this, orderRepository, itemFactory);
         this.clearOrdersInput = new ClearOrdersUseCase(this, orderRepository);
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
         this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
@@ -54,9 +52,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
                     break;
                 case 1:
                     orderProduct();
-                    break;
-                case 2:
-                    orderService();
                     break;
                 case 3:
                     viewAllOrders();
@@ -95,17 +90,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
         int quantity = Input.readInt();
 
         addProductInput.addProduct(orderID, name, price, quantity);
-    }
-
-    private void orderService() {
-        System.out.println("Service type: ");
-        String name = Input.readString();
-        System.out.println("Number of persons: ");
-        int persons = Input.readInt();
-        System.out.println("Hours: ");
-        int hours = Input.readInt();
-
-        addServiceInput.addService(orderID, name, persons, hours);
     }
 
 
@@ -202,15 +186,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IAddServiceOu
             System.out.println("Order could not be created.");
         }
         controlMenu();
-    }
-
-
-    @Override
-    public void onAddServiceResult(boolean updated) {
-        if (!updated) {
-            System.out.println("Service could not be added.");
-        }
-
     }
 
 
