@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 
-@Service
+
+@Service("clearOrdersUseCase")
 public class ClearOrdersUseCase implements IClearOrdersInput {
     private IOrderRepository orderRepository;
     private IClearOrdersOutput clearOrdersOutput;
 
     @Autowired
-    public ClearOrdersUseCase(@Qualifier("guiMenu") IClearOrdersOutput clearOrdersOutput, IOrderRepository orderRepository) {
+    public ClearOrdersUseCase(IClearOrdersOutput clearOrdersOutput, IOrderRepository orderRepository) {
         this.clearOrdersOutput = clearOrdersOutput;
         this.orderRepository = orderRepository;
     }

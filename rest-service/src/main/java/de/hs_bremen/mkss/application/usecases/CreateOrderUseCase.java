@@ -1,23 +1,22 @@
 package de.hs_bremen.mkss.application.usecases;
 
-import de.hs_bremen.mkss.application.boundaries.IClearOrdersOutput;
-import de.hs_bremen.mkss.application.boundaries.ICreadeOrderOutput;
+import de.hs_bremen.mkss.application.boundaries.ICreateOrderOutput;
 import de.hs_bremen.mkss.application.boundaries.ICreateOrderInput;
+import de.hs_bremen.mkss.domain.item.Item;
 import de.hs_bremen.mkss.domain.order.Order;
 import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 
-@Service
+
+@Service("createOrderUseCase")
 public class CreateOrderUseCase implements ICreateOrderInput {
     private IOrderRepository orderRepository;
-    private ICreadeOrderOutput createOrderOutput;
+    private ICreateOrderOutput createOrderOutput;
 
     @Autowired
-    public CreateOrderUseCase(@Qualifier("guiMenu")ICreadeOrderOutput createOrderOutput, IOrderRepository orderRepository) {
+    public CreateOrderUseCase(ICreateOrderOutput createOrderOutput, IOrderRepository orderRepository) {
         this.createOrderOutput = createOrderOutput;
         this.orderRepository = orderRepository;
     }
@@ -25,7 +24,20 @@ public class CreateOrderUseCase implements ICreateOrderInput {
 
     @Override
     public void createOrder() {
-        UUID id = orderRepository.save(new Order());
-        createOrderOutput.onCreateOrderResult(id);
+        try {
+            Order order = new Order();
+            for (Item item : order.getItems()) {
+                System.out.println("order items: " +item);
+            }
+            Order orderRepo = orderRepository.save(order);
+
+            for (Item item : order.getItems()) {
+                System.out.println("order items repo: " +item);
+            }
+            createOrderOutput.onCreateOrderResult(orderRepo);
+        } catch (Exception e) {
+            System.err.println("Error creating order: " + e.getMessage());
+            createOrderOutput.onCreateOrderResult(null);
+        }
     }
 }

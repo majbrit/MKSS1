@@ -11,22 +11,21 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-@Service
+
+@Service("getAllItemsUseCase")
 public class GetAllItemsUseCase implements IGetAllItemsInput {
     private final IOrderRepository orderRepository;
     private final IGetAllItemsOutput getAllItemsOutput;
 
     @Autowired
-    public GetAllItemsUseCase(@Qualifier("guiMenu")IGetAllItemsOutput getAllItemsOutput, IOrderRepository orderRepository) {
+    public GetAllItemsUseCase(IGetAllItemsOutput getAllItemsOutput, IOrderRepository orderRepository) {
         this.getAllItemsOutput = getAllItemsOutput;
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public void getAllItems(UUID orderId) {
-        Order order = orderRepository.findById(orderId);
+    public void getAllItems(Order order) {
         if (order != null) {
             order.sortItems();
             getAllItemsOutput.onGetAllItemsResult(order.getItems());

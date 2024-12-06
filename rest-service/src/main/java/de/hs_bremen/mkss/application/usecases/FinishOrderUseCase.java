@@ -8,27 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.Optional;
 
-@Service
+
+@Service("finishOrderUseCase")
 public class FinishOrderUseCase implements IFinishOrderInput {
     private IOrderRepository orderRepository;
     private IFinishOrderOutput finishOrderOutput;
 
     @Autowired
-    public FinishOrderUseCase(@Qualifier("guiMenu")IFinishOrderOutput finishOrderOutput, IOrderRepository orderRepository) {
+    public FinishOrderUseCase(IFinishOrderOutput finishOrderOutput, IOrderRepository orderRepository) {
         this.finishOrderOutput = finishOrderOutput;
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public void finishOrder(UUID orderId) {
-        Order order = orderRepository.findById(orderId);
+    public void finishOrder(Order order) {
+
         if (order != null) {
 
             order.setCheckoutDateTime();
 
-            orderRepository.update(orderId, order);
+            //JpaRepository has only save, the method can create and update
+            orderRepository.save(order);
 
 
             finishOrderOutput.onFinishOrderResult(true, order);

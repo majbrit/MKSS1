@@ -1,11 +1,8 @@
 package de.hs_bremen.mkss.interfaceAdapters.controllersAndPresenters.gui;
 
 import de.hs_bremen.mkss.application.boundaries.*;
-import de.hs_bremen.mkss.application.usecases.*;
-import de.hs_bremen.mkss.domain.factory.ItemFactory;
 import de.hs_bremen.mkss.domain.item.Item;
 import de.hs_bremen.mkss.domain.order.Order;
-import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,15 +17,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Component("guiMenu")
-public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllItemsOutput, IFinishOrderOutput, IClearOrdersOutput, IGetAllOrdersOutput {
+@Profile("gui")
+public class GuiMenu implements ICreateOrderOutput, IAddProductOutput, IGetAllItemsOutput, IFinishOrderOutput, IClearOrdersOutput, IGetAllOrdersOutput {
     private Scene scene;
 
     // product
@@ -56,28 +56,39 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
     private TableView<Item> basketListSummary;
     private Scene scenePopUp;
 
-    private UUID orderID;
+    private Order order;
 
 
     // use case input boundaries
     private ICreateOrderInput createOrderInput;
-    private IAddProductInput addProductinput;
+    private IAddProductInput addProductInput;
     private IGetAllItemsInput getAllItemsInput;
     private IFinishOrderInput finishOrderInput;
+    private IGetAllOrdersInput getAllOrdersInput;
+    private IClearOrdersInput clearOrdersInput;
+
 
     @Autowired
-    public GuiMenu(@Qualifier("orderRepo") IOrderRepository orderRepository, ItemFactory itemFactory) {
-        this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
-        this.addProductinput = new AddProductUseCase(this, orderRepository, itemFactory);
-        this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
-        this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
-
-        createOrderInput.createOrder();
+    public GuiMenu(@Lazy @Qualifier("createOrderUseCase")ICreateOrderInput createOrderInput,
+                   @Lazy @Qualifier("addProductUseCase")IAddProductInput addProductInput,
+                   @Lazy @Qualifier("clearOrdersUseCase")IClearOrdersInput clearOrdersInput,
+                   @Lazy @Qualifier("finishOrderUseCase")IFinishOrderInput finishOrderInput,
+                   @Lazy @Qualifier("getAllOrdersUseCase")IGetAllOrdersInput getAllOrdersInput,
+                   @Lazy @Qualifier("getAllItemsUseCase")IGetAllItemsInput getAllItemsInput) {
+        this.createOrderInput = createOrderInput;
+        this.addProductInput = addProductInput;
+        this.clearOrdersInput = clearOrdersInput;
+        this.finishOrderInput = finishOrderInput;
+        this.getAllOrdersInput = getAllOrdersInput;
+        this.getAllItemsInput = getAllItemsInput;
 
 
     }
 
-    public void setStage(Stage stage) {
+
+    public void setAll(Stage stage) {
+
+
         this.stage = stage;
         menuFxmlLoader = new FXMLLoader(getClass().getResource("/templates/GuiMenu.fxml"));
         menuFxmlLoader.setController(this);
@@ -87,6 +98,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
             e.printStackTrace();
         }
         init();
+        createOrderInput.createOrder();
         stage.setScene(menuScene);
         stage.setMaximized(true);
         stage.setTitle("Order System");
@@ -111,7 +123,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
             String name = productName.getText();
             int price = Integer.parseInt(productPrice.getText());
             int quantity = Integer.parseInt(productQuantity.getText());
-            addProductinput.addProduct(orderID, name, price, quantity);
+            addProductInput.addProduct(order, name, price, quantity);
 
             productName.clear();
             productPrice.clear();
@@ -122,7 +134,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
     }
 
     private void updateList() {
-        getAllItemsInput.getAllItems(orderID);
+        getAllItemsInput.getAllItems(order);
     }
 
     private void createPopupWindow() {
@@ -179,7 +191,7 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
 
     @FXML
     private void buyItems() {
-        finishOrderInput.finishOrder(orderID);
+        finishOrderInput.finishOrder(order);
     }
 
     private void showSummary(List<Item> items, String sumString, String checkOut) {
@@ -198,32 +210,36 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
         basketList.getItems().clear();
         basketListSummary.getItems().clear();
 
+        this.order = null;
         createOrderInput.createOrder();
 
         popupWindow.close();
     }
 
     @Override
-    public void onAddProductResult(boolean updated) {
-        if (!updated) {
+    public void onAddProductResult(Order order) {
+        if (order == null) {
             productError.setText("Product could not be added");
         } else {
             updateList();
         }
+        this.order = order;
     }
 
     @Override
-    public void onCreateOrderResult(UUID orderId) {
-        if(orderId == null) {
+    public void onCreateOrderResult(Order order) {
+        if(order == null) {
             //TODO show text in gui
             System.out.println("Order could not be created");
         }
-        this.orderID = orderId;
+        this.order = order;
+        updateList();
     }
 
 
     @Override
     public void onGetAllItemsResult(List<Item> items) {
+        System.out.println(items);
         ArrayList<Item> arrayItems = new ArrayList<>(items);
         basketList.setItems(FXCollections.<Item>observableArrayList(arrayItems));
     }
@@ -231,11 +247,12 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
     @Override
     public void onFinishOrderResult(boolean success, Order finishedOrder) {
         if (success && finishedOrder != null) {
-
+            this.order = finishedOrder;
             showSummary(finishedOrder.getItems(), finishedOrder.getSumString(), finishedOrder.checkoutDateTime());
         } else {
             System.out.println("Failed to finish the order.");
         }
+
     }
 
     @Override
@@ -245,6 +262,5 @@ public class GuiMenu implements ICreadeOrderOutput, IAddProductOutput, IGetAllIt
 
     @Override
     public void onGetAllOrdersResult(List<Order> orders) {
-
     }
 }

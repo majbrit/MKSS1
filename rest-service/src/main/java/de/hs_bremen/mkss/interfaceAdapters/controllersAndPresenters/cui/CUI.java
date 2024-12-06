@@ -1,21 +1,24 @@
 package de.hs_bremen.mkss.interfaceAdapters.controllersAndPresenters.cui;
 
 import de.hs_bremen.mkss.application.boundaries.*;
-import de.hs_bremen.mkss.application.usecases.*;
 import de.hs_bremen.mkss.common.Input;
-import de.hs_bremen.mkss.domain.factory.ItemFactory;
 import de.hs_bremen.mkss.domain.order.Order;
 import de.hs_bremen.mkss.domain.item.Item;
-import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 
-public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetAllItemsOutput {
+@Component
+@Profile("cli")
+public class CUI implements ICreateOrderOutput, IAddProductOutput, IClearOrdersOutput, IFinishOrderOutput, IGetAllOrdersOutput, IGetAllItemsOutput {
 
-    public UUID orderID;
+    private Order order;
     private boolean newOrder;
 
     // use case input boundaries
@@ -26,6 +29,23 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
     private IGetAllOrdersInput getAllOrdersInput;
     private IGetAllItemsInput getAllItemsInput;
 
+    @Autowired
+    public CUI(@Lazy @Qualifier("createOrderUseCase")ICreateOrderInput createOrderInput,
+               @Lazy @Qualifier("addProductUseCase")IAddProductInput addProductInput,
+               @Lazy @Qualifier("clearOrdersUseCase")IClearOrdersInput clearOrdersInput,
+               @Lazy @Qualifier("finishOrderUseCase")IFinishOrderInput finishOrderInput,
+               @Lazy @Qualifier("getAllOrdersUseCase")IGetAllOrdersInput getAllOrdersInput,
+               @Lazy @Qualifier("getAllItemsUseCase")IGetAllItemsInput getAllItemsInput) {
+        this.createOrderInput = createOrderInput;
+        this.addProductInput = addProductInput;
+        this.clearOrdersInput = clearOrdersInput;
+        this.finishOrderInput = finishOrderInput;
+        this.getAllOrdersInput = getAllOrdersInput;
+        this.getAllItemsInput = getAllItemsInput;
+    }
+
+    /*
+    @Autowired
     public CUI(IOrderRepository orderRepository, ItemFactory itemFactory) {
         this.createOrderInput = new CreateOrderUseCase(this, orderRepository);
         this.addProductInput = new AddProductUseCase(this, orderRepository, itemFactory);
@@ -33,7 +53,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
         this.finishOrderInput = new FinishOrderUseCase(this, orderRepository);
         this.getAllOrdersInput = new GetAllOrdersUseCase(this, orderRepository);
          this.getAllItemsInput = new GetAllItemsUseCase(this, orderRepository);
-    }
+    }*/
 
     public void menuLoop() {
 
@@ -78,7 +98,6 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
         System.out.println("Your choice?");
         System.out.println("(0) Finish order");
         System.out.println("(1) Order product");
-        System.out.println("(2) Order service");
         System.out.println("(3) View all orders");
         System.out.println("(4) Delete all orders");
     }
@@ -91,12 +110,12 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
         System.out.println("Quantity: ");
         int quantity = Input.readInt();
 
-        addProductInput.addProduct(orderID, name, price, quantity);
+        addProductInput.addProduct(order, name, price, quantity);
     }
 
 
     private void printItems() {
-        getAllItemsInput.getAllItems(orderID);
+        getAllItemsInput.getAllItems(order);
     }
     @Override
     public void onGetAllItemsResult(List<Item> items) {
@@ -114,11 +133,17 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
     }
 
     @Override
+    @Transactional
     public void onGetAllOrdersResult(List<Order> orders) {
         if (orders.isEmpty()) {
             System.out.println("No orders available.");
         } else {
             for (Order order : orders) {
+                // Force initialization of the 'items' collection if it's lazily loaded
+                if (order.getItems() != null) {
+                    order.getItems().size();  // This will initialize the collection
+                }
+
                 // Print the order details
                 String orderDate = order.getCheckoutDateTime() != null ? String.valueOf(order.getCheckoutDateTime()) : "Not yet checked out";
                 System.out.println("Order placed at: " + orderDate);
@@ -150,7 +175,7 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
 
     private void finishOrder() {
 
-        finishOrderInput.finishOrder(orderID);
+        finishOrderInput.finishOrder(order);
 
 
     }
@@ -175,17 +200,19 @@ public class CUI implements ICreadeOrderOutput, IAddProductOutput, IClearOrdersO
 
 
     @Override
-    public void onAddProductResult(boolean updated) {
-        if (!updated) {
+    public void onAddProductResult(Order order) {
+        if (order == null) {
             System.out.println("Product could not be added.");
         }
     }
 
     @Override
-    public void onCreateOrderResult(UUID orderId) {
-        this.orderID = orderId;
-        if(orderId == null) {
+    public void onCreateOrderResult(Order order) {
+
+        if(order == null) {
             System.out.println("Order could not be created.");
+        } else {
+            this.order = order;
         }
         controlMenu();
     }
