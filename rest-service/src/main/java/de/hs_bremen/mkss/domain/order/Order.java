@@ -35,15 +35,47 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkoutDateTime;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.EMPTY;
+
     @Transient
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+    public enum OrderStatus {
+        EMPTY,
+        IN_PREPARATION,
+        COMMITTED,
+        ACCEPTED,
+        REJECTED
+    }
 
     public Order() {
         items = new ArrayList<>();
     }
 
-    public void addProduct(Item product) {
-        items.add(product);
+    public void addProduct(Item Item) {
+        if (this.status == OrderStatus.COMMITTED) {
+            throw new IllegalStateException("Cannot modify a committed order.");
+        }
+        
+        items.add(Item);
+        updateStatus();
+    }
+    public void removeItem(Item item) {
+        if (this.status == OrderStatus.COMMITTED) {
+            throw new IllegalStateException("Cannot modify a committed order.");
+        }
+
+        this.items.remove(item);
+        updateStatus();
+    }
+
+    private void updateStatus() {
+        if (this.items.isEmpty()) {
+            this.status = OrderStatus.EMPTY;
+        } else {
+            this.status = OrderStatus.IN_PREPARATION;
+        }
     }
 
 
@@ -81,6 +113,14 @@ public class Order {
         int sum = getSum();
         return PriceFormatter.formatPrice(sum);
     }
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
 
     public Long getId() {
         return id;

@@ -10,12 +10,13 @@ import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
     // use case input boundaries
     private IOrderRepository orderRepository;
@@ -28,7 +29,8 @@ public class OrderController {
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
     private IClearOrdersInput clearOrdersInput;
-
+    private IGetOrderByIdInput getOrderByIdInput;
+    private IPurchaseOrderInput purchaseOrderInput;
 
 
 
@@ -40,24 +42,33 @@ public class OrderController {
                    @Lazy @Qualifier("clearOrdersUseCase")IClearOrdersInput clearOrdersInput,
                    @Lazy @Qualifier("finishOrderUseCase")IFinishOrderInput finishOrderInput,
                    @Lazy @Qualifier("getAllOrdersUseCase")IGetAllOrdersInput getAllOrdersInput,
+                           @Lazy @Qualifier("getOrderByIdUseCase")IGetOrderByIdInput getOrderByIdInput,
+                           @Lazy @Qualifier("PurchaseOrderUseCase")IPurchaseOrderInput purchaseOrderInput,
                    @Lazy @Qualifier("getAllItemsUseCase")IGetAllItemsInput getAllItemsInput) {
         this.createOrderInput = createOrderInput;
         this.addProductInput = addProductInput;
         this.clearOrdersInput = clearOrdersInput;
         this.finishOrderInput = finishOrderInput;
         this.getAllOrdersInput = getAllOrdersInput;
+        this.getOrderByIdInput = getOrderByIdInput;
         this.getAllItemsInput = getAllItemsInput;
         this.orderRepository = orderRepository;
         this.itemFactory = itemFactory;
+        this.purchaseOrderInput =purchaseOrderInput;
     }
 
-    /*http://localhost:2222/orders*/
-    @GetMapping("/orders")
+    /*
+    *
+    * */
+    @GetMapping
     public List<Order> getOrders() {
         List<Order> orders = getAllOrdersInput.getAllOrders();
         return orders;
     }
-
+    @GetMapping("/{orderId}")
+    public Order getOrderById(@PathVariable Long orderId) {
+        return getOrderByIdInput.getOrderById(orderId);
+    }
     /*http://localhost:2222/orders/1/*/
     @GetMapping("orders/{orderid}")
     public Optional<Order> getOrder(@RequestParam(value = "orderid", defaultValue = "0") Long id) {
@@ -109,5 +120,14 @@ public class OrderController {
     @GetMapping("{orderid}/deleteorderitem/{itemid}")
     public Optional<Order> deleteorderItem(@RequestParam(value = "itemId", defaultValue = "0") Long itemId) {
         return null;
+    }
+
+    @PutMapping("/{orderId}/purchase")
+    public Order purchaseOrder(@PathVariable Long orderId) {
+        try {
+            return purchaseOrderInput.purchaseOrder(orderId);
+        } catch (IllegalStateException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
 }
