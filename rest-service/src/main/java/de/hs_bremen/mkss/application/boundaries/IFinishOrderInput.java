@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface IFinishOrderInput {
-    public void finishOrder(Order order);
+    public Order finishOrder(Order order);
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface IAddProductInput {
-    public void addProduct(Order order, String name, int price, int quantity);
+    public Order addProduct(Order order, String name, int price, int quantity);
 }

@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface IClearOrdersInput {
-   public void clearOrders();
+   public boolean clearOrders();
 }
