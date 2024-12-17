@@ -57,7 +57,7 @@ public class Order {
         if (this.status == OrderStatus.COMMITTED) {
             throw new IllegalStateException("Cannot modify a committed order.");
         }
-        
+
         items.add(Item);
         updateStatus();
     }
@@ -121,8 +121,17 @@ public class Order {
         this.status = status;
     }
 
-
     public Long getId() {
         return id;
+    }
+
+    public boolean deleteItem(Long itemId) {
+        var item = items.stream()
+                .filter(x -> x.getId().equals(itemId))
+                .findFirst();
+
+        if(!item.isPresent()) return false;
+
+        return items.remove(item);
     }
 }

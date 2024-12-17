@@ -7,8 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("getAllOrdersUseCase")
 @Transactional
@@ -19,15 +19,16 @@ public class GetAllOrdersUseCase implements IGetAllOrdersInput {
     public GetAllOrdersUseCase(IOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
+
     @Override
     public List getAllOrders() {
         List<Order> orders = orderRepository.findAll();
 
-        if (orders.isEmpty()) {
-            return new ArrayList<>();
-        } else {
-            return orders;
-        }
+        return orders;
     }
 
+    @Override
+    public Order getOrder(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 }

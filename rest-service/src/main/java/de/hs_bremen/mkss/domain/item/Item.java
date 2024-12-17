@@ -32,8 +32,6 @@ public abstract class Item {
         this.order = order;
     }
 
-
-
     public String getName() {
         return name;
     }
@@ -48,4 +46,7 @@ public abstract class Item {
         return String.format("%.2f EUR", priceInCent / 100.0);
     }
 
+    public Long getId() {
+        return id;
+    }
 }

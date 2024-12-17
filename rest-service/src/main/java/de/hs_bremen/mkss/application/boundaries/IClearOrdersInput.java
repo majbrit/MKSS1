@@ -5,4 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface IClearOrdersInput {
    public boolean clearOrders();
+
+   public boolean deleteOrder(Long id);
 }

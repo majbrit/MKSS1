@@ -1,22 +1,20 @@
 package de.hs_bremen.mkss.restservice;
 
 import java.util.List;
-import java.util.Optional;
 
 import de.hs_bremen.mkss.application.boundaries.*;
 import de.hs_bremen.mkss.domain.factory.ItemFactory;
+import de.hs_bremen.mkss.domain.item.Item;
 import de.hs_bremen.mkss.domain.order.Order;
 import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
+import de.hs_bremen.mkss.restservice.models.OrderItem;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/orders")
 public class OrderController {
     // use case input boundaries
     private IOrderRepository orderRepository;
@@ -29,11 +27,6 @@ public class OrderController {
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
     private IClearOrdersInput clearOrdersInput;
-    private IGetOrderByIdInput getOrderByIdInput;
-    private IPurchaseOrderInput purchaseOrderInput;
-
-
-
 
     @Autowired
     public OrderController(IOrderRepository orderRepository, ItemFactory itemFactory,
@@ -42,92 +35,96 @@ public class OrderController {
                    @Lazy @Qualifier("clearOrdersUseCase")IClearOrdersInput clearOrdersInput,
                    @Lazy @Qualifier("finishOrderUseCase")IFinishOrderInput finishOrderInput,
                    @Lazy @Qualifier("getAllOrdersUseCase")IGetAllOrdersInput getAllOrdersInput,
-                           @Lazy @Qualifier("getOrderByIdUseCase")IGetOrderByIdInput getOrderByIdInput,
-                           @Lazy @Qualifier("PurchaseOrderUseCase")IPurchaseOrderInput purchaseOrderInput,
                    @Lazy @Qualifier("getAllItemsUseCase")IGetAllItemsInput getAllItemsInput) {
         this.createOrderInput = createOrderInput;
         this.addProductInput = addProductInput;
         this.clearOrdersInput = clearOrdersInput;
         this.finishOrderInput = finishOrderInput;
         this.getAllOrdersInput = getAllOrdersInput;
-        this.getOrderByIdInput = getOrderByIdInput;
         this.getAllItemsInput = getAllItemsInput;
         this.orderRepository = orderRepository;
         this.itemFactory = itemFactory;
-        this.purchaseOrderInput =purchaseOrderInput;
     }
 
-    /*
-    *
-    * */
-    @GetMapping
+    /*http://localhost:2222/orders*/
+    @GetMapping("/orders")
     public List<Order> getOrders() {
-        List<Order> orders = getAllOrdersInput.getAllOrders();
-        return orders;
-    }
-    @GetMapping("/{orderId}")
-    public Order getOrderById(@PathVariable Long orderId) {
-        return getOrderByIdInput.getOrderById(orderId);
-    }
-    /*http://localhost:2222/orders/1/*/
-    @GetMapping("orders/{orderid}")
-    public Optional<Order> getOrder(@RequestParam(value = "orderid", defaultValue = "0") Long id) {
-        /*var getAllOrdersOutput = new GetAllOrdersOutput();
-        var getAllOrdersUseCase = new GetAllOrdersUseCase(getAllOrdersOutput, orderRepository);
-
-        getAllOrdersUseCase.getAllOrders();
-
-        return getAllOrdersOutput.orders.stream()
-                .filter(order -> order.getId().equals(id))
-                .findFirst();*/
-
-        return null;
+        return getAllOrdersInput.getAllOrders();
     }
 
-    @GetMapping("orders/addorder")
-    public Order addOrder() {
-        /*var createOrderOutput = new CreateOrderOutput();
-        var clearOrdersUseCase = new CreateOrderUseCase(createOrderOutput, orderRepository);
+    /*http://localhost:2222/orders/1*/
+    @GetMapping("/orders/{orderId}")
+    public Order getOrder(@PathVariable Long orderId, HttpServletResponse response) {
+        var order = getAllOrdersInput.getOrder(orderId);
 
-        clearOrdersUseCase.createOrder();
+        if(order == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-        return createOrderOutput.order;*/
-        return null;
-    }
-
-    @GetMapping("orders/{orderid}/deleteorder")
-    public boolean deleteOrder(@RequestParam(value = "id", defaultValue = "0") Long id) {
-       /* var clearOrdersOutput = new ClearOrdersOutput();
-        var clearOrdersUseCase = new ClearOrdersUseCase(clearOrdersOutput, orderRepository);
-
-        //ZK: need to implemented delete one Order
-        clearOrdersUseCase.clearOrders();
-
-        return clearOrdersOutput.success;*/
-        return false;
-    }
-
-    @GetMapping("orders/{orderid}/orderitems")
-    public Order getorderItems(@RequestParam(value = "orderId", defaultValue = "0") Long orderId) {
-        return null;
-    }
-
-    @GetMapping("orders/{orderid}/addorderitem")
-    public Order addorderItem() {
-        return null;
-    }
-
-    @GetMapping("{orderid}/deleteorderitem/{itemid}")
-    public Optional<Order> deleteorderItem(@RequestParam(value = "itemId", defaultValue = "0") Long itemId) {
-        return null;
-    }
-
-    @PutMapping("/{orderId}/purchase")
-    public Order purchaseOrder(@PathVariable Long orderId) {
-        try {
-            return purchaseOrderInput.purchaseOrder(orderId);
-        } catch (IllegalStateException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+            return null;
         }
+
+        return order;
+    }
+
+    /*http://localhost:2222/orders/addorder*/
+    @GetMapping("/orders/addorder")
+    public Order addOrder() {
+        return createOrderInput.createOrder();
+    }
+
+    /*http://localhost:2222/orders/3/deleteorder*/
+    @DeleteMapping("/orders/{orderId}/deleteorder")
+    public boolean deleteOrder(@PathVariable Long orderId, HttpServletResponse response) {
+        var order = getAllOrdersInput.getOrder(orderId);
+
+        if(order == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            return false;
+        }
+
+        return clearOrdersInput.deleteOrder(orderId);
+    }
+
+    /*http://localhost:2222/orders/3/orderitems*/
+    @GetMapping("/orders/{orderId}/orderitems")
+    public List<Item> getorderItems(@PathVariable Long orderId, HttpServletResponse response) {
+        var order = getAllOrdersInput.getOrder(orderId);
+
+        if(order == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            return null;
+        }
+
+        return getAllItemsInput.getAllItems(order);
+    }
+
+    /*http://localhost:2222/orders/3/addorderitem*/
+    @PutMapping("/orders/{orderId}/addorderitem")
+    public Item addorderItem(@RequestBody OrderItem orderItem, @PathVariable Long orderId, HttpServletResponse response) {
+        var order = getAllOrdersInput.getOrder(orderId);
+
+        if(order == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            return null;
+        }
+
+        return addProductInput.addProduct(order, orderItem.name, orderItem.price, orderItem.quantity);
+    }
+
+    /*http://localhost:2222/orders/3/deleteorderitem/6*/
+    @DeleteMapping("/orders/{orderId}/deleteorderitem/{itemId}")
+    public boolean deleteorderItem(@PathVariable Long orderId, @PathVariable Long itemId, HttpServletResponse response) {
+        var order = getAllOrdersInput.getOrder(orderId);
+
+        if(order == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+            return false;
+        }
+
+        return getAllItemsInput.deleteItem(order, itemId);
     }
 }

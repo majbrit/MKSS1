@@ -12,5 +12,4 @@ import java.util.UUID;
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long> {
 
-
 }

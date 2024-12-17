@@ -7,8 +7,6 @@ import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
 @Service("createOrderUseCase")
 public class CreateOrderUseCase implements ICreateOrderInput {
     private IOrderRepository orderRepository;
@@ -17,7 +15,6 @@ public class CreateOrderUseCase implements ICreateOrderInput {
     public CreateOrderUseCase( IOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-
 
     @Override
     public Order createOrder() {

@@ -5,8 +5,6 @@ import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
 @Service("clearOrdersUseCase")
 public class ClearOrdersUseCase implements IClearOrdersInput {
     private IOrderRepository orderRepository;
@@ -15,7 +13,6 @@ public class ClearOrdersUseCase implements IClearOrdersInput {
     public ClearOrdersUseCase(IOrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-
 
     @Override
     public boolean clearOrders() {
@@ -27,4 +24,13 @@ public class ClearOrdersUseCase implements IClearOrdersInput {
         }
     }
 
+    @Override
+    public boolean deleteOrder(Long id) {
+        try {
+            orderRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

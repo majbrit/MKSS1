@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service("getAllItemsUseCase")
 public class GetAllItemsUseCase implements IGetAllItemsInput {
     private final IOrderRepository orderRepository;
@@ -27,5 +26,10 @@ public class GetAllItemsUseCase implements IGetAllItemsInput {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public boolean deleteItem(Order order, Long itemId) {
+        return order.deleteItem(itemId);
     }
 }

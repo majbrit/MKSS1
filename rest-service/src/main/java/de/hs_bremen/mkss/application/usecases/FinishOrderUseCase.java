@@ -6,7 +6,6 @@ import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service("finishOrderUseCase")
 public class FinishOrderUseCase implements IFinishOrderInput {
     private IOrderRepository orderRepository;
