@@ -81,4 +81,8 @@ public class Order {
         int sum = getSum();
         return PriceFormatter.formatPrice(sum);
     }
+
+    public Long getId() {
+        return id;
+    }
 }

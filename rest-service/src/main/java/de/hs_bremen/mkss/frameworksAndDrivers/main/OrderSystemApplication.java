@@ -38,6 +38,9 @@ public class OrderSystemApplication extends Application {
 			case "gui":
 				System.setProperty("spring.profiles.active", "gui");  // GUI-Profil aktivieren
 				break;
+			case "rest":
+				SpringApplication.run(OrderSystemApplication.class, args);
+				return;
 			default:
 				System.out.println("Invalid argument: Please use ‘cli’ or ‘gui’ as an argument.");
 				return;
