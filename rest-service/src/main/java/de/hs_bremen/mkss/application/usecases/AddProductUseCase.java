@@ -1,6 +1,7 @@
 package de.hs_bremen.mkss.application.usecases;
 
 import de.hs_bremen.mkss.application.boundaries.IAddProductInput;
+import de.hs_bremen.mkss.application.exceptions.OrderNotFoundException;
 import de.hs_bremen.mkss.domain.factory.ItemFactory;
 import de.hs_bremen.mkss.domain.item.Item;
 import de.hs_bremen.mkss.domain.item.LineItem;
@@ -22,6 +23,13 @@ public class AddProductUseCase implements IAddProductInput {
 
     @Override
     public Item addProduct(Order order, String name, int price, int quantity) {
+        if (!orderRepository.existsById(order.getId())) {
+            throw new OrderNotFoundException("Order with  does not exist.");
+        }
+        if (order.getStatus() == Order.OrderStatus.COMMITTED) {
+            throw new IllegalStateException("Cannot modify a committed order.");
+        }
+
         LineItem lineItem = itemFactory.createProduct(name, price, quantity, order);
         order.addProduct(lineItem);
         Order updatedOrder = orderRepository.save(order);

@@ -7,6 +7,7 @@ import de.hs_bremen.mkss.domain.factory.ItemFactory;
 import de.hs_bremen.mkss.domain.item.Item;
 import de.hs_bremen.mkss.domain.order.Order;
 import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
+import de.hs_bremen.mkss.interfaceAdapters.dtos.CreateOrderRequest;
 import de.hs_bremen.mkss.interfaceAdapters.dtos.OrderItem;
 import de.hs_bremen.mkss.application.exceptions.EmptyOrderException;
 import de.hs_bremen.mkss.application.exceptions.ItemNotFoundException;
@@ -16,9 +17,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
     // use case input boundaries
     private IOrderRepository orderRepository;
@@ -31,12 +35,17 @@ public class OrderController {
     private IFinishOrderInput finishOrderInput;
     private IGetAllOrdersInput getAllOrdersInput;
     private IClearOrdersInput clearOrdersInput;
+    private IGetOrderByIdInput getOrderByIdInput;
+    private IPurchaseOrderInput purchaseOrderInput;
+
 
     @Autowired
     public OrderController(IOrderRepository orderRepository, ItemFactory itemFactory,
                    @Lazy @Qualifier("createOrderUseCase")ICreateOrderInput createOrderInput,
                    @Lazy @Qualifier("addProductUseCase")IAddProductInput addProductInput,
                    @Lazy @Qualifier("clearOrdersUseCase")IClearOrdersInput clearOrdersInput,
+                           @Lazy @Qualifier("getOrderByIdUseCase")IGetOrderByIdInput getOrderByIdInput,
+                           @Lazy @Qualifier("PurchaseOrderUseCase")IPurchaseOrderInput purchaseOrderInput,
                    @Lazy @Qualifier("finishOrderUseCase")IFinishOrderInput finishOrderInput,
                    @Lazy @Qualifier("getAllOrdersUseCase")IGetAllOrdersInput getAllOrdersInput,
                    @Lazy @Qualifier("getAllItemsUseCase")IGetAllItemsInput getAllItemsInput) {
@@ -48,100 +57,69 @@ public class OrderController {
         this.getAllItemsInput = getAllItemsInput;
         this.orderRepository = orderRepository;
         this.itemFactory = itemFactory;
+        this.getOrderByIdInput = getOrderByIdInput;
+        this.purchaseOrderInput =purchaseOrderInput;
     }
 
     /*http://localhost:2222/orders*/
-    @GetMapping("/orders")
+    @GetMapping
     public List<Order> getOrders() {
         return getAllOrdersInput.getAllOrders();
     }
 
     /*http://localhost:2222/orders/1*/
-    @GetMapping("/orders/{orderId}")
-    public Order getOrder(@PathVariable Long orderId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
 
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
-        }
-
-        return order;
+    @GetMapping("/{orderId}")
+    public Order getOrderById(@PathVariable Long orderId) {
+        return getOrderByIdInput.getOrderById(orderId);
     }
 
     /*http://localhost:2222/orders/addorder*/
-    @GetMapping("/orders/addorder")
-    public Order addOrder() {
-        return createOrderInput.createOrder();
+    @PostMapping("/addorder")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Order addOrder(@RequestBody CreateOrderRequest request) {
+        return createOrderInput.createOrder(request.getCustomerName());
     }
 
+
     /*http://localhost:2222/orders/3/deleteorder*/
-    @DeleteMapping("/orders/{orderId}/deleteorder")
-    public boolean deleteOrder(@PathVariable Long orderId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
 
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
-        }
-
-        return clearOrdersInput.deleteOrder(orderId);
+    @DeleteMapping("/{orderId}/deleteorder")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
+        clearOrdersInput.deleteOrder(orderId);
+        return ResponseEntity.ok("Order with ID " + orderId + " has been successfully deleted");
     }
 
     /*http://localhost:2222/orders/3/orderitems*/
-    @GetMapping("/orders/{orderId}/orderitems")
-    public List<Item> getorderItems(@PathVariable Long orderId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
-
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
-        }
-
+    @GetMapping("/{orderId}/items")
+    public List<Item> getOrderItems(@PathVariable Long orderId) {
+        Order order = getOrderByIdInput.getOrderById(orderId);
         return getAllItemsInput.getAllItems(order);
     }
 
+
     /*http://localhost:2222/orders/3/addorderitem*/
-    @PutMapping("/orders/{orderId}/addorderitem")
-    public Item addorderItem(@RequestBody OrderItem orderItem, @PathVariable Long orderId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
 
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
-        }
-
+    @PutMapping("/{orderId}/additem")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Item addOrderItem(@RequestBody OrderItem orderItem, @PathVariable Long orderId) {
+        Order order = getOrderByIdInput.getOrderById(orderId);
         return addProductInput.addProduct(order, orderItem.name, orderItem.price, orderItem.quantity);
     }
 
     /*http://localhost:2222/orders/3/deleteorderitem/6*/
-    @DeleteMapping("/orders/{orderId}/deleteorderitem/{itemId}")
-    public boolean deleteorderItem(@PathVariable Long orderId, @PathVariable Long itemId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
-
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist.");
-        }
-
-        order.getItems().stream()
-                .filter(item -> item.getId().equals(itemId))
-                .findFirst()
-                .orElseThrow(() -> new ItemNotFoundException("Item with id " + itemId + " not found in order."));
-
-        return getAllItemsInput.deleteItem(order, itemId);
+    @DeleteMapping("/{orderId}/deleteitem/{itemId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<String> deleteOrderItem(@PathVariable Long orderId, @PathVariable Long itemId) {
+        getAllItemsInput.deleteItem(orderId, itemId);
+        return ResponseEntity.ok("Item with ID " + itemId + " has been successfully deleted from order " + orderId);
     }
 
-    @PostMapping("/orders/{orderId}/buy")
-    public void buyOrder(@PathVariable Long orderId, HttpServletResponse response) {
-        var order = getAllOrdersInput.getOrder(orderId);
-        if(order == null) {
-            throw new OrderNotFoundException("Order with id " + orderId + " does not exist and cannot be bought.");
-        }
-        if(order.getItems().isEmpty()) {
-            throw new EmptyOrderException("Order with id " + orderId + " has no items and cannot be bought.");
-        }
 
-        //TODO If Order has already been bought
-        if(false) {
-            throw new OrderAlreadyBoughtException("Order with id " + orderId + " has already been bought.");
-        }
-
-        response.setStatus(HttpServletResponse.SC_OK);
+    @PutMapping("/{orderId}/purchase")
+    @ResponseStatus(HttpStatus.OK)
+    public Order purchaseOrder(@PathVariable Long orderId) {
+        return purchaseOrderInput.purchaseOrder(orderId);
     }
 }

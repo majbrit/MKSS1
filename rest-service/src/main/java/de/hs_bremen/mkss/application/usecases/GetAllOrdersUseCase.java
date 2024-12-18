@@ -27,8 +27,5 @@ public class GetAllOrdersUseCase implements IGetAllOrdersInput {
         return orders;
     }
 
-    @Override
-    public Order getOrder(Long id) {
-        return orderRepository.findById(id).orElse(null);
-    }
+
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface ICreateOrderInput {
-    public Order createOrder();
+    public Order createOrder(String customerName);
 }

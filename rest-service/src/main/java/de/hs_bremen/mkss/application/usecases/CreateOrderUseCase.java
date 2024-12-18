@@ -17,9 +17,10 @@ public class CreateOrderUseCase implements ICreateOrderInput {
     }
 
     @Override
-    public Order createOrder() {
+    public Order createOrder(String customerName) {
         try {
             Order order = new Order();
+            order.setCustomerName(customerName);
             for (Item item : order.getItems()) {
                 System.out.println("order items: " +item);
             }

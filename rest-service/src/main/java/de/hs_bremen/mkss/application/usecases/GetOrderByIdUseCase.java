@@ -1,6 +1,7 @@
 package de.hs_bremen.mkss.application.usecases;
 
 import de.hs_bremen.mkss.application.boundaries.IGetOrderByIdInput;
+import de.hs_bremen.mkss.application.exceptions.OrderNotFoundException;
 import de.hs_bremen.mkss.domain.order.Order;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,6 @@ public class GetOrderByIdUseCase implements IGetOrderByIdInput {
     @Override
     public Order getOrderById(Long orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
-        return order.orElseThrow(() -> new IllegalStateException("Order not found with id: " + orderId));
+        return order.orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + orderId));
     }
 }

@@ -30,7 +30,7 @@ public class Order {
     @OrderBy("totalPrice")
     private List<Item> items;
 
-
+    private String customerName;
     //to store date correct
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkoutDateTime;
@@ -137,5 +137,13 @@ public class Order {
         items.remove(item.get());
 
         return !items.contains(item.get());
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

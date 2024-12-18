@@ -9,5 +9,4 @@ import java.util.List;
 public interface IGetAllOrdersInput {
     public List getAllOrders();
 
-    public Order getOrder(Long id);
 }

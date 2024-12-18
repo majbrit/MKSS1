@@ -1,10 +1,13 @@
 package de.hs_bremen.mkss.application.usecases;
 
 import de.hs_bremen.mkss.application.boundaries.IPurchaseOrderInput;
+import de.hs_bremen.mkss.application.exceptions.OrderNotFoundException;
 import de.hs_bremen.mkss.domain.order.Order;
 import de.hs_bremen.mkss.domain.repositoryInterfaces.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service("PurchaseOrderUseCase")
 public class PurchaseOrderUseCase implements IPurchaseOrderInput {
@@ -18,7 +21,7 @@ public class PurchaseOrderUseCase implements IPurchaseOrderInput {
     @Override
     public Order purchaseOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalStateException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException("Order with id " + orderId + " does not exist."));
 
 
         if (order.getStatus() != Order.OrderStatus.IN_PREPARATION) {
@@ -27,7 +30,7 @@ public class PurchaseOrderUseCase implements IPurchaseOrderInput {
 
 
         order.setStatus(Order.OrderStatus.COMMITTED);
-
+        order.setCheckoutDateTime();
         return orderRepository.save(order);
     }
 }

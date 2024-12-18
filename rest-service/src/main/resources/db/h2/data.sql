@@ -1,7 +1,8 @@
-INSERT INTO orders (checkout_date_time, status)
-VALUES ('2024-12-06 12:30:00', 'ACCEPTED');
-INSERT INTO orders (checkout_date_time, status)
-VALUES ('2024-12-03 14:40:00', 'ACCEPTED');
+INSERT INTO orders (checkout_date_time, status, customer_name)
+VALUES ('2024-12-06 12:30:00', 'ACCEPTED', 'Alice');
+
+INSERT INTO orders (checkout_date_time, status, customer_name)
+VALUES ('2024-12-03 14:40:00', 'ACCEPTED', 'Bob');
 
 INSERT INTO item (name, quantity, total_price, unit_price, order_id, dtype)
 VALUES
