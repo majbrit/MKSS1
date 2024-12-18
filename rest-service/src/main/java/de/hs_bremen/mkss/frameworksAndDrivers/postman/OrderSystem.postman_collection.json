@@ -61,7 +61,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/1",
+					"raw": "http://localhost:2222/orders/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -69,7 +69,7 @@
 					"port": "2222",
 					"path": [
 						"orders",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -82,9 +82,19 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
 							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
 							""
 						],
 						"type": "text/javascript",
@@ -93,8 +103,17 @@
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerName\": \"Elsa Hansen\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:2222/orders/addorder",
 					"protocol": "http",
@@ -111,7 +130,7 @@
 			"response": []
 		},
 		{
-			"name": "add order item",
+			"name": "add item",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -119,9 +138,15 @@
 						"exec": [
 							"pm.sendRequest({\r",
 							"    url: 'http://localhost:2222/orders/addorder',\r",
-							"    method: 'GET',\r",
+							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            customerName: \"Elea Customer\"\r",
+							"        })\r",
 							"    }\r",
 							"});"
 						],
@@ -133,8 +158,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							""
 						],
@@ -156,7 +181,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:2222/orders/3/addorderitem",
+					"raw": "http://localhost:2222/orders/3/additem",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -165,14 +190,14 @@
 					"path": [
 						"orders",
 						"3",
-						"addorderitem"
+						"additem"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "get order items",
+			"name": "get items",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -180,9 +205,15 @@
 						"exec": [
 							"pm.sendRequest({\r",
 							"    url: 'http://localhost:2222/orders/addorder',\r",
-							"    method: 'GET',\r",
+							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            customerName: \"Elea Customer\"\r",
+							"        })\r",
 							"    }\r",
 							"});\r",
 							"const requestBody = {\r",
@@ -191,7 +222,7 @@
 							"    quantity: 22\r",
 							"};\r",
 							"pm.sendRequest({\r",
-							"    url: 'http://localhost:2222/orders/3/addorderitem',\r",
+							"    url: 'http://localhost:2222/orders/3/additem',\r",
 							"    method: 'PUT',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
@@ -224,7 +255,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/3/orderitems",
+					"raw": "http://localhost:2222/orders/3/items",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -233,14 +264,14 @@
 					"path": [
 						"orders",
 						"3",
-						"orderitems"
+						"items"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "delete order item",
+			"name": "delete item",
 			"event": [
 				{
 					"listen": "test",
@@ -260,7 +291,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/1/deleteorderitem/1",
+					"raw": "http://localhost:2222/orders/1/deleteitem/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -269,7 +300,7 @@
 					"path": [
 						"orders",
 						"1",
-						"deleteorderitem",
+						"deleteitem",
 						"1"
 					]
 				}
@@ -368,7 +399,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/555/orderitems",
+					"raw": "http://localhost:2222/orders/555/items",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -377,14 +408,14 @@
 					"path": [
 						"orders",
 						"555",
-						"orderitems"
+						"items"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "empty order",
+			"name": "purchase empty order",
 			"event": [
 				{
 					"listen": "test",
@@ -405,16 +436,28 @@
 						"exec": [
 							"pm.sendRequest({\r",
 							"    url: 'http://localhost:2222/orders/addorder',\r",
-							"    method: 'GET',\r",
+							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            customerName: \"Maria Musterfrau\"\r",
+							"        })\r",
 							"    }\r",
 							"});\r",
 							"pm.sendRequest({\r",
 							"    url: 'http://localhost:2222/orders/addorder',\r",
-							"    method: 'GET',\r",
+							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            customerName: \"Max Maxson\"\r",
+							"        })\r",
 							"    }\r",
 							"});"
 						],
@@ -424,10 +467,10 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/4/buy",
+					"raw": "http://localhost:2222/orders/4/purchase",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -436,7 +479,7 @@
 					"path": [
 						"orders",
 						"4",
-						"buy"
+						"purchase"
 					]
 				}
 			},
@@ -451,9 +494,15 @@
 						"exec": [
 							"pm.sendRequest({\r",
 							"    url: 'http://localhost:2222/orders/addorder',\r",
-							"    method: 'GET',\r",
+							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            customerName: \"Erika Mustermann\"\r",
+							"        })\r",
 							"    }\r",
 							"});\r",
 							"const requestBody = {\r",
@@ -462,7 +511,7 @@
 							"    quantity: 22\r",
 							"};\r",
 							"pm.sendRequest({\r",
-							"    url: 'http://localhost:2222/orders/3/addorderitem',\r",
+							"    url: 'http://localhost:2222/orders/3/additem',\r",
 							"    method: 'PUT',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
@@ -473,15 +522,28 @@
 							"    }\r",
 							"});\r",
 							"pm.sendRequest({\r",
-							"    url: 'http://localhost:2222/orders/3/buy',\r",
-							"    method: 'POST',\r",
+							"    url: 'http://localhost:2222/orders/3/purchase',\r",
+							"    method: 'PUT',\r",
 							"    header: {\r",
 							"        'Content-Type': 'application/json'\r",
 							"    },\r",
 							"    body: {\r",
 							"        mode: 'raw',\r",
-							"        raw: ''  // Kein Body für den POST-Request\r",
+							"        raw: ''  \r",
 							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
 							"});\r",
 							""
 						],
@@ -491,10 +553,10 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/3/buy",
+					"raw": "http://localhost:2222/orders/3/purchase",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -503,7 +565,7 @@
 					"path": [
 						"orders",
 						"3",
-						"buy"
+						"purchase"
 					]
 				}
 			},

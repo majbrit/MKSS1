@@ -3,7 +3,7 @@
 
 # postman tasks
 - the postman collection can be found in frameworksAndDrivers/postman/
-- It should be noted that delete order item and delte order can only pass the test the first time they are executed, as they delete a predefined item and a predefined order from the database, which will no longer be there the next time they are executed.
+- It should be noted that delete order item and delete order can only pass the test the first time they are executed, as they delete a predefined item and a predefined order from the database, which will no longer be there the next time they are executed. Add item will only pass the test on the first run.
 
 
 # Argumentation for persistence-oriented repository
