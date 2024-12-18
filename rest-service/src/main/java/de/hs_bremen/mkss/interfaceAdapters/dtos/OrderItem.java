@@ -1,4 +1,4 @@
-package de.hs_bremen.mkss.restservice.models;
+package de.hs_bremen.mkss.interfaceAdapters.dtos;
 
 public class OrderItem {
     public String name;
