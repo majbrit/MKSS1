@@ -130,8 +130,12 @@ public class Order {
                 .filter(x -> x.getId().equals(itemId))
                 .findFirst();
 
-        if(!item.isPresent()) return false;
+        if (item.isEmpty()) {
+            return false;
+        }
 
-        return items.remove(item);
+        items.remove(item.get());
+
+        return !items.contains(item.get());
     }
 }

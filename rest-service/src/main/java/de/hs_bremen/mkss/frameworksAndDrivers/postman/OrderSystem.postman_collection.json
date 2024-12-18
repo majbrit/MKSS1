@@ -122,7 +122,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/3/deleteorderitem/6",
+					"raw": "http://localhost:2222/orders/1/deleteorderitem/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -130,9 +130,9 @@
 					"port": "2222",
 					"path": [
 						"orders",
-						"3",
+						"1",
 						"deleteorderitem",
-						"6"
+						"1"
 					]
 				}
 			},
@@ -144,7 +144,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:2222/orders/3/deleteorder",
+					"raw": "http://localhost:2222/orders/1/deleteorder",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -152,7 +152,7 @@
 					"port": "2222",
 					"path": [
 						"orders",
-						"3",
+						"1",
 						"deleteorder"
 					]
 				}
