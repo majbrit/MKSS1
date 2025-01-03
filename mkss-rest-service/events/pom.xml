@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- 
+        Depending on your project configuration (top-level Maven project?) 
+        you should choose one of the following configuration snippets.
+    --> 
+
+    <!-- Configuration, if top-level _Maven_ project exists --> 
+    <!-- (Adapt to fit your top-level project!) --> 
+
+    <parent>
+        <artifactId>mkss-rest-service</artifactId>
+        <groupId>de.hs-bremen.mkss</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>events</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <!-- Configuration, if there is no top-level _Maven_ project --> 
+   <!-- <artifactId>events</artifactId>
+    <groupId>de.hs-bremen.mkss</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>-->
+
+    <!-- 
+        End of configuration alternatives.
+    --> 
+
+    <properties>
+        <!-- Compiler configuration: change to fit your Java installation --> 
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <!-- Dependency versions --> 
+        <jackson-version>2.18.2</jackson-version>
+        <lombok-version>1.18.36</lombok-version>
+    </properties>
+
+    <dependencies>
+        <!-- JSON Processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+
+        <!-- Code Generation -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok-version}</version>
+        </dependency>
+    </dependencies>
+
+
+</project>

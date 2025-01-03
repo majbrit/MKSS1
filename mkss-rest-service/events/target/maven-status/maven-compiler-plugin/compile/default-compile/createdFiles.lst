@@ -1,0 +1,5 @@
+de\hsbremen\mkss\events\Event$EventType.class
+de\hsbremen\mkss\events\EventWithPayload.class
+de\hsbremen\mkss\events\Event.class
+de\hsbremen\mkss\events\CrudEventProducer.class
+de\hsbremen\mkss\events\EventWithPayload$Builder.class
