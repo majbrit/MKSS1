@@ -19,9 +19,10 @@ public class RabbitMqConfig {
     @Value("${my.rabbitmq.a.queue}")
     String orderQueue;
 
+    /*
     @Value("${my.rabbitmq.a.routing.key}")
     String orderRoutingKey;
-
+*/
     // BEGIN: Template code for direct exchanges and fanout exchanges
 
 
@@ -55,12 +56,12 @@ public class RabbitMqConfig {
 
     @Bean("orderExchange")
     FanoutExchange orderExchange() {
-        return new FanoutExchange("orderExchange");
+        return new FanoutExchange(orderExchange);
     }
 
     @Bean("orderQueue")
     Queue anotherQueue() {
-        return new Queue("orderQueue", false);
+        return new Queue(orderQueue, false);
     }
 
     @Bean

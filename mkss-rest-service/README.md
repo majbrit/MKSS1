@@ -1,7 +1,6 @@
 # Starting Project
-- Open docker desktop
 - Command in Terminal: ```docker-compose up```.
-- Then start rest-serivce
+- Then start rest-service and order-events-processor
 - RabbitMQ is running on http://localhost:15673/, Username: guest, Password: guest
 - 
 

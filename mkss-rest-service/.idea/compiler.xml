@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="order-events-processor" />
         <module name="events" />
         <module name="rest-service" />
       </profile>
@@ -15,6 +16,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="events" options="-parameters" />
+      <module name="order-events-processor" options="-parameters" />
       <module name="rest-service" options="-parameters" />
     </option>
   </component>

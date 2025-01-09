@@ -30,4 +30,6 @@ public abstract class Event {
         this.type = type;
         this.date = date;
     }
+
+    public Event(){}
 }

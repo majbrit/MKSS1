@@ -23,6 +23,16 @@ public class EventWithPayload<T> extends Event {
         this.payload = payload;
     }
 
+    public EventWithPayload(){}
+
+    public T getPayload() {
+        return payload;
+    }
+
+    public void setPayload(T payload) {
+        this.payload = payload;
+    }
+
     // Private constructor only for JSON deserialization (Jackson)
     @JsonCreator
     private EventWithPayload(@JsonProperty("id") int eventId,
