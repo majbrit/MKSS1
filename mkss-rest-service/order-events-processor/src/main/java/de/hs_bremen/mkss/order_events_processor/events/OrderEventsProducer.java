@@ -50,8 +50,20 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	@Override
 	public void emitUpdateEvent(OrderDTO orderDTO) {
 		// Implementation for update events (e.g. changed order)
+
+
+
 		EventWithPayload<OrderDTO> event = buildEvent(Event.EventType.CHANGED, orderDTO);
-		sendEventToRabbitMQ(event);
+
+		try {
+			sendEventToRabbitMQ(event);
+			System.out.println("sent update Event: " + event);
+		} catch (Exception e) {
+			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+
 	}
 
 	@Override

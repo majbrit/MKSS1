@@ -13,71 +13,63 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
+    // Order exchange and queue
     @Value("${my.rabbitmq.an.exchange}")
-    String orderExchange;
+    private String orderExchange;
 
     @Value("${my.rabbitmq.a.queue}")
-    String orderQueue;
+    private String orderQueue;
 
-    /*
-    @Value("${my.rabbitmq.a.routing.key}")
-    String orderRoutingKey;
-*/
-    // BEGIN: Template code for direct exchanges and fanout exchanges
+    // Reply exchange and queue
+    @Value("${my.rabbitmq.reply.exchange}")
+    private String replyExchange;
 
+    @Value("${my.rabbitmq.reply.queue}")
+    private String replyQueue;
 
-    /* Fanout is used
-    //
-    // Template code: Configuration of a direct exchange (uses routing key)
-    //
-
-    // Exchanges are required for emitting and receiving event messages
-    @Bean("someExchange")
-    DirectExchange someExchange() {
-        return new DirectExchange(anExchangeName);
-    }
-
-    // Queues are required for receiving event messages
-    @Bean("someQueue")
-    Queue someQueue() {
-        return new Queue(aQueueName, false);
-    }
-
-    // Bindings are required for receiving event messages:
-    // connecting of a queue to an exchange 
-    @Bean
-    Binding someBinding(@Qualifier("someQueue") Queue queue, @Qualifier("someExchange") DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(aRoutingKeyName);
-    }
-*/
-    //
-    // Template code: Configuration of a fanout exchange (no routing key)
-    //
-
+    // 1. Declare the order exchange as a Fanout Exchange
     @Bean("orderExchange")
-    FanoutExchange orderExchange() {
+    public FanoutExchange orderExchange() {
         return new FanoutExchange(orderExchange);
     }
 
+    // 2. Declare the order queue
     @Bean("orderQueue")
-    Queue anotherQueue() {
+    public Queue orderQueue() {
         return new Queue(orderQueue, false);
     }
 
+    // 3. Bind the order queue to the order exchange
     @Bean
-    Binding orderBinding(@Qualifier("orderQueue") Queue queue, @Qualifier("orderExchange") FanoutExchange exchange) {
+    public Binding orderBinding(@Qualifier("orderQueue") Queue queue, @Qualifier("orderExchange") FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }
 
-    // END: Template code for direct exchanges and fanout exchanges
+    // 4. Declare the reply exchange as a Fanout Exchange
+    @Bean("replyExchange")
+    public FanoutExchange replyExchange() {
+        return new FanoutExchange(replyExchange);
+    }
 
+    // 5. Declare the reply queue
+    @Bean("replyQueue")
+    public Queue replyQueue() {
+        return new Queue(replyQueue, false);
+    }
 
+    // 6. Bind the reply queue to the reply exchange
+    @Bean
+    public Binding replyBinding(@Qualifier("replyQueue") Queue queue, @Qualifier("replyExchange") FanoutExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange);
+    }
 
+    // 7. Configure the message converter to handle JSON
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
+    // 8. Configure the AMQP template
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

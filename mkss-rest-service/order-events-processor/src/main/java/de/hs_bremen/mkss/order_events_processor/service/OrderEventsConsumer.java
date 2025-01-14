@@ -24,16 +24,20 @@ public class OrderEventsConsumer {
     public void receiveMessage(EventWithPayload<OrderDTO> event) {
         System.out.println("Received Order Event: " + event);
         var order = event.getPayload();
-
-        if (order.getStatus() != "COMMITTED") return;
-
+        System.out.println(order.getStatus());
+        if (!order.getStatus().equals("COMMITTED")) {
+            return;
+        }
         if (getRandomBoolean()) {
             order.setStatus("ACCEPTED");
+            System.out.println("Order status changed to ACCEPTED.");
         } else {
             order.setStatus("REJECTED");
+            System.out.println("Order status changed to REJECTED.");
         }
 
         orderEventsProducer.emitUpdateEvent(order);
+        System.out.println("Event sent.");
     }
 
     private static boolean getRandomBoolean() {
