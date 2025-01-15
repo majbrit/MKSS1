@@ -27,6 +27,9 @@ public class RabbitMqConfig {
     @Value("${my.rabbitmq.reply.queue}")
     private String replyQueue;
 
+    @Value("${my.rabbitmq.reply.routingKey}")
+    private String replyRoutingKey;
+
     // 1. Declare the order exchange as a Fanout Exchange
     @Bean("orderExchange")
     public FanoutExchange orderExchange() {
@@ -46,9 +49,12 @@ public class RabbitMqConfig {
     }
 
     // 4. Declare the reply exchange as a Fanout Exchange
+
+
+    // 5. Declare the reply queue
     @Bean("replyExchange")
-    public FanoutExchange replyExchange() {
-        return new FanoutExchange(replyExchange);
+    public DirectExchange replyExchange() {
+        return new DirectExchange(replyExchange);
     }
 
     // 5. Declare the reply queue
@@ -57,11 +63,12 @@ public class RabbitMqConfig {
         return new Queue(replyQueue, false);
     }
 
-    // 6. Bind the reply queue to the reply exchange
+    // 6. Bind the reply queue to the reply exchange with a routing key
     @Bean
-    public Binding replyBinding(@Qualifier("replyQueue") Queue queue, @Qualifier("replyExchange") FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    public Binding replyBinding() {
+        return BindingBuilder.bind(replyQueue()).to(replyExchange()).with(replyRoutingKey);
     }
+
 
     // 7. Configure the message converter to handle JSON
     @Bean

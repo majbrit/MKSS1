@@ -22,6 +22,19 @@ public class RabbitMqConfig {
     @Value("${my.rabbitmq.a.queue}")
     String orderQueue;
 
+    @Value("${my.rabbitmq.reply.exchange}")
+    String replyExchange;
+
+    @Value("${my.rabbitmq.reply.routingKey}")
+    String replyRoutingKey;
+
+    @Bean("replyExchange")
+    DirectExchange replyExchange() {
+        return new DirectExchange(replyExchange);
+    }
+
+
+
     @Bean("orderExchange")
     FanoutExchange orderExchange() {
         return new FanoutExchange(orderExchange);

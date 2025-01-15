@@ -22,9 +22,9 @@ public class ReplyEventsConsumer {
     }
 
 
-    @RabbitListener(queues = "orderQueue")
+    @RabbitListener(queues = "${my.rabbitmq.reply.queue}")
     public void receiveReplyEvent(EventWithPayload<OrderDTO> event) {
-        System.out.println("Received Order Event: " + event);
+        System.out.println("Received response Event: " + event);
         OrderDTO updatedOrderDTO = event.getPayload();
         System.out.println(updatedOrderDTO.getStatus());
         Optional<Order> optionalOrder = orderRepository.findById(updatedOrderDTO.getId());

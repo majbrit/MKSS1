@@ -23,6 +23,12 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	@Value("${my.rabbitmq.an.exchange}")
 	String orderExchange;
 
+	@Value("${my.rabbitmq.reply.exchange}")
+	private String replyExchange;
+
+	@Value("${my.rabbitmq.reply.routingKey}")
+	private String replyRoutingKey;
+
     /*@Value("${my.rabbitmq.a.routing.key}")
     String orderRoutingKey;*/
 
@@ -56,8 +62,8 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 		EventWithPayload<OrderDTO> event = buildEvent(Event.EventType.CHANGED, orderDTO);
 
 		try {
-			sendEventToRabbitMQ(event);
-			System.out.println("sent update Event: " + event);
+			amqpTemplate.convertAndSend(replyExchange, replyRoutingKey, event);
+			System.out.println("Sent reply event: " + event);
 		} catch (Exception e) {
 			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
 			e.printStackTrace();
