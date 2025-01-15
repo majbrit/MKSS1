@@ -28,9 +28,3 @@ or:
 -> and 15672 to 15673
 
 # Direct exchange or fanout exchange
-fanout has been chosen:
-- Messages can be sent to multiple applications
-- no routing logic is required
-- if specific forwarding is required in the future, you can switch to direct exchange
-- Every order should trigger an event
-- allows experimentation with multiple consumers

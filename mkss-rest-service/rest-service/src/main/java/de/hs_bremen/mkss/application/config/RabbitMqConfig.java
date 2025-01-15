@@ -27,40 +27,73 @@ public class RabbitMqConfig {
     @Value("${my.rabbitmq.reply.queue}")
     private String replyQueue;
 
-    // 1. Declare the order exchange as a Fanout Exchange
-    @Bean("orderExchange")
-    public FanoutExchange orderExchange() {
-        return new FanoutExchange(orderExchange);
+    // 1. Declare the order exchange as an Exchange
+    @Bean
+    public DirectExchange orderExchange() {
+        return new DirectExchange(orderExchange);
     }
 
     // 2. Declare the order queue
-    @Bean("orderQueue")
+    @Bean("orderQueueBean")
     public Queue orderQueue() {
         return new Queue(orderQueue, false);
     }
 
     // 3. Bind the order queue to the order exchange
+
     @Bean
-    public Binding orderBinding(@Qualifier("orderQueue") Queue queue, @Qualifier("orderExchange") FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    Binding orderBinding(@Qualifier("orderQueueBean") Queue orderQueue, DirectExchange orderExchange) {
+        return BindingBuilder.bind(orderQueue)
+                .to(orderExchange)
+                .with("order-created");
     }
 
-    // 4. Declare the reply exchange as a Fanout Exchange
+    @Bean
+    Binding orderUpdateBinding(@Qualifier("orderQueueBean")Queue orderQueue, DirectExchange orderExchange) {
+        return BindingBuilder.bind(orderQueue)
+                .to(orderExchange)
+                .with("order-updated");
+    }
+
+    @Bean
+    Binding orderDeleteBinding(@Qualifier("orderQueueBean")Queue orderQueue, DirectExchange orderExchange) {
+        return BindingBuilder.bind(orderQueue)
+                .to(orderExchange)
+                .with("order-deleted");
+    }
+
+    // 4. Declare the reply exchange as an Exchange
     @Bean("replyExchange")
-    public FanoutExchange replyExchange() {
-        return new FanoutExchange(replyExchange);
+    public DirectExchange replyExchange() {
+        return new DirectExchange(replyExchange);
     }
 
     // 5. Declare the reply queue
-    @Bean("replyQueue")
+    @Bean("replyQueueBean")
     public Queue replyQueue() {
         return new Queue(replyQueue, false);
     }
 
     // 6. Bind the reply queue to the reply exchange
     @Bean
-    public Binding replyBinding(@Qualifier("replyQueue") Queue queue, @Qualifier("replyExchange") FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    Binding replyBinding(@Qualifier("replyQueueBean")Queue replyQueue, DirectExchange replyExchange) {
+        return BindingBuilder.bind(replyQueue)
+                .to(replyExchange)
+                .with("emit-order-created");
+    }
+
+    @Bean
+    Binding replyUpdateBinding(@Qualifier("replyQueueBean")Queue replyQueue, DirectExchange replyExchange) {
+        return BindingBuilder.bind(replyQueue)
+                .to(replyExchange)
+                .with("emit-update-order");
+    }
+
+    @Bean
+    Binding replyDeleteBinding(@Qualifier("replyQueueBean")Queue replyQueue, DirectExchange replyExchange) {
+        return BindingBuilder.bind(replyQueue)
+                .to(replyExchange)
+                .with("emit-delete-order");
     }
 
     // 7. Configure the message converter to handle JSON

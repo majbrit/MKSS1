@@ -6,6 +6,7 @@ import de.hsbremen.mkss.events.EventWithPayload;
 import de.hsbremen.mkss.events.dto.ItemDTO;
 import de.hsbremen.mkss.events.dto.OrderDTO;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,23 +21,20 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 
 	private final AmqpTemplate amqpTemplate;
 
-	@Value("${my.rabbitmq.an.exchange}")
-	String orderExchange;
+	// Reply exchange and queue
+	@Value("${my.rabbitmq.reply.exchange}")
+	private String replyExchange;
 
-    /*@Value("${my.rabbitmq.a.routing.key}")
-    String orderRoutingKey;*/
-
-
+	@Autowired
 	public OrderEventsProducer(AmqpTemplate amqpTemplate) {
 		this.amqpTemplate = amqpTemplate;
 	}
 
 	private EventWithPayload<OrderDTO> buildEvent(Event.EventType type, OrderDTO orderDTO) {
-		EventWithPayload<OrderDTO> event = new EventWithPayload.Builder<OrderDTO>()
-				.setType(type)
-				.setPayload(orderDTO)
-				.build();
-		return event;
+        return new EventWithPayload.Builder<OrderDTO>()
+                .setType(type)
+                .setPayload(orderDTO)
+                .build();
 	}
 
 	@Override
@@ -50,9 +48,6 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	@Override
 	public void emitUpdateEvent(OrderDTO orderDTO) {
 		// Implementation for update events (e.g. changed order)
-
-
-
 		EventWithPayload<OrderDTO> event = buildEvent(Event.EventType.CHANGED, orderDTO);
 
 		try {
@@ -62,8 +57,6 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
 			e.printStackTrace();
 		}
-
-
 	}
 
 	@Override
@@ -74,8 +67,21 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	}
 
 	private void sendEventToRabbitMQ(EventWithPayload<OrderDTO> event) {
-		amqpTemplate.convertAndSend(orderExchange, "", event);
-		// routing key is empty string because of fanout
-		System.out.println("Sent event = " + event + " using exchange " + orderExchange);
+
+		String routingKey = switch (event.getType()) {
+            case CREATED -> "emit-order-created";
+            case CHANGED -> "emit-order-updated";
+            case DELETED -> "emit-order-deleted";
+        };
+
+		try {
+			amqpTemplate.convertAndSend(replyExchange, routingKey, event);
+			System.out.println("Sent Here: " + event);
+		} catch (Exception e) {
+			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
+			e.printStackTrace();
+		}
+        amqpTemplate.convertAndSend(replyExchange, routingKey, event);
+		System.out.println("Sent event = " + event + " using exchange " + replyExchange + ", routing key " + routingKey);
 	}
 }

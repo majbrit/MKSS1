@@ -6,7 +6,6 @@ import de.hsbremen.mkss.events.CrudEventProducer;
 import de.hsbremen.mkss.events.Event;
 import de.hsbremen.mkss.events.EventWithPayload;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import de.hs_bremen.mkss.domain.order.Order;
@@ -26,10 +25,6 @@ public class OrderEventsProducer implements CrudEventProducer<Order> {
 
     @Value("${my.rabbitmq.an.exchange}")
     String orderExchange;
-
-    /*@Value("${my.rabbitmq.a.routing.key}")
-    String orderRoutingKey;*/
-
 
 	public OrderEventsProducer(AmqpTemplate amqpTemplate) {
 		this.amqpTemplate = amqpTemplate;
@@ -58,16 +53,17 @@ public class OrderEventsProducer implements CrudEventProducer<Order> {
 			}
 		}
 		orderDTO.setItems(itemDTOs);
+
+		System.out.println("DORT "+order.getStatus());
 		return orderDTO;
 	}
 
 	private EventWithPayload<OrderDTO> buildEvent(Event.EventType type, Order order) {
 		OrderDTO orderDTO = convertToDTO(order);
-		EventWithPayload<OrderDTO> event = new EventWithPayload.Builder<OrderDTO>()
-				.setType(type)
-				.setPayload(orderDTO)
-				.build();
-		return event;
+        return new EventWithPayload.Builder<OrderDTO>()
+                .setType(type)
+                .setPayload(orderDTO)
+                .build();
 	}
 
 	@Override
@@ -93,8 +89,12 @@ public class OrderEventsProducer implements CrudEventProducer<Order> {
 	}
 
 	private void sendEventToRabbitMQ(EventWithPayload<OrderDTO> event) {
-		amqpTemplate.convertAndSend(orderExchange, "", event);
-		// routing key is empty string because of fanout
-		System.out.println("Sent event = " + event + " using exchange " + orderExchange);
+		String routingKey = switch (event.getType()) {
+			case CREATED -> "order-created";
+			case CHANGED -> "order-updated";
+			case DELETED -> "order-deleted";
+        };
+		amqpTemplate.convertAndSend(orderExchange, routingKey, event);
+		System.out.println("Sent event = " + event + " using exchange " + orderExchange + ", routing key = " + routingKey);
 	}
 }

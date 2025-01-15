@@ -132,6 +132,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public Order purchaseOrder(@PathVariable Long orderId) {
         Order order = purchaseOrderInput.purchaseOrder(orderId);
+        System.out.println("HIER "+ order.getStatus());
         orderEventsProducer.emitUpdateEvent(order);
         return order;
     }

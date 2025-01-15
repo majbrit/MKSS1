@@ -19,6 +19,7 @@ public abstract class Event {
     private EventType type;
     private Date date;
 
+
     public Event(EventType type) {
         this.id = counter.incrementAndGet();
         this.date = new Date();
@@ -32,4 +33,8 @@ public abstract class Event {
     }
 
     public Event(){}
+
+    public EventType getType() {
+        return type;
+    }
 }
