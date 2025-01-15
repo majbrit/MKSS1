@@ -56,20 +56,8 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	@Override
 	public void emitUpdateEvent(OrderDTO orderDTO) {
 		// Implementation for update events (e.g. changed order)
-
-
-
 		EventWithPayload<OrderDTO> event = buildEvent(Event.EventType.CHANGED, orderDTO);
-
-		try {
-			amqpTemplate.convertAndSend(replyExchange, replyRoutingKey, event);
-			System.out.println("Sent reply event: " + event);
-		} catch (Exception e) {
-			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-
+		sendEventToRabbitMQ(event);
 	}
 
 	@Override
@@ -80,7 +68,13 @@ public class OrderEventsProducer implements CrudEventProducer<OrderDTO> {
 	}
 
 	private void sendEventToRabbitMQ(EventWithPayload<OrderDTO> event) {
-		amqpTemplate.convertAndSend(orderExchange, "", event);
+		try {
+			amqpTemplate.convertAndSend(replyExchange, replyRoutingKey, event);
+			System.out.println("Sent reply event: " + event);
+		} catch (Exception e) {
+			System.out.println("Error sending event to RabbitMQ: " + e.getMessage());
+			e.printStackTrace();
+		}
 		// routing key is empty string because of fanout
 		System.out.println("Sent event = " + event + " using exchange " + orderExchange);
 	}
