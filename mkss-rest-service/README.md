@@ -2,7 +2,8 @@
 - Command in Terminal: ```docker-compose up```.
 - Then start rest-service and order-events-processor
 - RabbitMQ is running on http://localhost:15673/, Username: guest, Password: guest
-- 
+- http://localhost:2222/swagger-ui.html
+- http://localhost:2222/v3/api-docs
 
 ![img.png](img.png)
 

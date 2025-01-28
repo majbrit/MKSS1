@@ -30,9 +30,7 @@
     </properties>
 
     <dependencyManagement>
-        <dependencies>
-            <!-- Common dependencies or version constraints can be added here -->
-        </dependencies>
+
     </dependencyManagement>
 
     <build>
