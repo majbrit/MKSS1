@@ -25,7 +25,7 @@ public class Order {
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier of the order", example = "1", required = true)
+    @Schema(description = "Unique identifier of the order", example = "1")
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -38,11 +38,11 @@ public class Order {
     private String customerName;
     //to store date correct
     @Temporal(TemporalType.TIMESTAMP)
-    @Schema(description = "Date and time when the order was placed. status", example = "21/03/2025; 21:03", required = true)
+    @Schema(description = "Date and time when the order was placed. status", example = "21/03/2025; 21:03")
     private Date checkoutDateTime;
 
     @Enumerated(EnumType.STRING)
-    @Schema(description = "Current status of the order", example = "Completed", required = true)
+    @Schema(description = "Current status of the order", example = "Completed")
     private OrderStatus status = OrderStatus.EMPTY;
 
     @Transient

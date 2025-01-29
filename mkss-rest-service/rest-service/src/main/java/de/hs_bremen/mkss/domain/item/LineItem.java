@@ -1,12 +1,14 @@
 package de.hs_bremen.mkss.domain.item;
 
 import de.hs_bremen.mkss.domain.order.Order;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 //entity managed by JPA
 @Entity
 public class LineItem extends Item {
 
+    @Schema(description = "Quantity of an item", example = "2", required = true)
     private int quantity;
 
     public LineItem() {

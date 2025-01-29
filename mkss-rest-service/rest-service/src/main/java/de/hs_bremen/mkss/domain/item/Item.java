@@ -15,14 +15,14 @@ public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier of the item", example = "1", required = true)
+    @Schema(description = "Unique identifier of the item", example = "1")
     private Long id;
 
     @Schema(description = "Name or description of the item", example = "ItemX", required = true)
     protected String name;
-    @Schema(description = "Total price of the item", example = "2", required = true)
+    @Schema(description = "Total price of the item in cents", example = "200")
     protected int totalPrice;
-    @Schema(description = "Price per unit of the item", example = "1", required = true)
+    @Schema(description = "Price per unit of the item in cents", example = "100", required = true)
     protected int unitPrice;
 
     @ManyToOne
