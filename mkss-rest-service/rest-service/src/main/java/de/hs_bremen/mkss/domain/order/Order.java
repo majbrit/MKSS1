@@ -2,6 +2,7 @@ package de.hs_bremen.mkss.domain.order;
 
 import de.hs_bremen.mkss.common.PriceFormatter;
 import de.hs_bremen.mkss.domain.item.Item;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,24 +19,30 @@ import jakarta.persistence.*;
 //use orders instead of order in database, because order is a reserved keyword
 @Entity
 @Table(name = "orders")
+@Schema(description = "Entity representing an order." )
 public class Order {
 
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the order", example = "1", required = true)
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     @OrderBy("totalPrice")
+    @Schema(description = "List of items included in the order", required = true)
     private List<Item> items;
 
+    @Schema(description = "Customer name for the order", example = "Elsa Hansen", required = true)
     private String customerName;
     //to store date correct
     @Temporal(TemporalType.TIMESTAMP)
+    @Schema(description = "Date and time when the order was placed. status", example = "21/03/2025; 21:03", required = true)
     private Date checkoutDateTime;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "Current status of the order", example = "Completed", required = true)
     private OrderStatus status = OrderStatus.EMPTY;
 
     @Transient

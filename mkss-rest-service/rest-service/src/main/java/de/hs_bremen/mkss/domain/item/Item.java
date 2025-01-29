@@ -1,6 +1,7 @@
 package de.hs_bremen.mkss.domain.item;
 
 import de.hs_bremen.mkss.domain.order.Order;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -9,14 +10,19 @@ import jakarta.persistence.*;
 // Abstract class is useful here, as there are many common functions and properties that can be implemented here in summarised form
 
 @Entity
+@Schema(description = "Entity representing an item." )
 public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Unique identifier of the item", example = "1", required = true)
     private Long id;
 
+    @Schema(description = "Name or description of the item", example = "ItemX", required = true)
     protected String name;
+    @Schema(description = "Total price of the item", example = "2", required = true)
     protected int totalPrice;
+    @Schema(description = "Price per unit of the item", example = "1", required = true)
     protected int unitPrice;
 
     @ManyToOne
