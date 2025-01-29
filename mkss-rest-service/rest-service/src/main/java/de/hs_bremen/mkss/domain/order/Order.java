@@ -106,6 +106,7 @@ public class Order {
         return simpleDateFormat.format(getCheckoutDateTime());
     }
 
+    @Schema(description = "The sum of all prices of the items in cents", example = "250")
     public int getSum() {
         int sum = 0;
         for (Item item : items) {
@@ -116,6 +117,7 @@ public class Order {
         return sum;
     }
 
+    @Schema(description = "The sum of all prices of the items formatted in a string", example = "2.50 EUR")
     public String getSumString() {
         int sum = getSum();
         return PriceFormatter.formatPrice(sum);
